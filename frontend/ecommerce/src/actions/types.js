@@ -1,0 +1,20 @@
+export const SET_ALERT = "SET_ALERT";
+export const REMOVE_ALERT = "REMOVE_ALERT";
+export const REGISTER_SUCCESS = "REGISTER_SUCCESS";
+export const REGISTER_FAIL = "REGISTER_FAIL";
+export const LOGIN_SUCCESS = "LOGIN_SUCCESS";
+export const GOOGLE_LOGIN_SUCCESS = "GOOGLE_LOGIN_SUCCESS";
+export const LOGIN_FAIL = "LOGIN_FAIL";
+export const LOGOUT = "LOGOUT";
+
+export const PRODUCTS = "PRODUCTS";
+export const PRODUCT_FAIL = "PRODUCT_FAIL";
+
+export const PRODUCT = "PRODUCT";
+
+export const CATEGORIES = "CATEGORIES";
+
+// export const CHEAP_PRODUCTS="CHEAP_PRODUCTS"
+// export const EXPENSIVE_PRODUCTS="EXPENSIVE_PRODUCTS"
+// export const NEW_PRODUCTS="EXPENSIVE_PRODUCTS"
+// export const OLD_PRODUCTS="EXPENSIVE_PRODUCTS"
