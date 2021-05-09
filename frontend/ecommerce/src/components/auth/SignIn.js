@@ -3,6 +3,8 @@ import { connect,useSelector} from "react-redux";
 import { googleLogin, loginCustomer } from "../../actions/auth";
 import {useHistory, withRouter } from "react-router-dom";
 import GoogleLogin from 'react-google-login';
+import { GOOGLE_CLIENT_ID } from "../../keys";
+
 
 const SignIn = ({ loginCustomer, history ,googleLogin }) => {
   // console.log(isAuthenticated);
@@ -101,7 +103,7 @@ const SignIn = ({ loginCustomer, history ,googleLogin }) => {
             <div class="flex items-center justify-between">
               <div class="flex items-center">
                   <GoogleLogin
-                clientId={process.env.GOOGLE_CLIENT_ID}
+                clientId={GOOGLE_CLIENT_ID}
                 buttonText="Login with Google"
                 onSuccess={responseSuccessGoogle}
                 onFailure={responseFailureGoogle}
@@ -186,11 +188,3 @@ export default connect(null, { loginCustomer,googleLogin })(withRouter(SignIn));
 
 // export default SignIn;
 
-// api key
-// AIzaSyD8S9y7vPmUKkY0V8cCXqvSJa0n7J_YDa0
-
-// clientid
-// 599807210860-m62h4h27klnmj9odks5ml82cu5bqcvc4.apps.googleusercontent.com
-
-// clientsecret
-// k0-FFI--j_V9dYMo0cA00qwR
