@@ -34,11 +34,21 @@ export const searchProduct = (search) => async (dispatch) => {
     //   },
     // };
     const res=await axios.get(`/product/search-product/${search}`)
+    dispatch({ type: PRODUCTS, payload: res.data });
     // const res = await axios.get("/product/search-product" + `?title=${search}`,config);
     // const res=await axios.get('/product/search-product',{ params: { title:search} })
     // console.log(res);
   } catch (err) {
-    // console.log(err);
+    console.log(err);
+  }
+};
+
+export const categoryProductSearch = (categoryID,search) => async (dispatch) => {
+  try {
+    const res=await axios.get(`/product/category/${categoryID}/${search}`)
+    dispatch({ type: PRODUCTS, payload: res.data });
+  } catch (err) {
+    console.log(err);
   }
 };
 

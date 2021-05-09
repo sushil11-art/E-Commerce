@@ -2,7 +2,22 @@ const express = require("express");
 const router = express.Router();
 const { body, validationResult } = require("express-validator");
 // import controllers here
-const { addProduct, editProduct, deleteProduct, getProducts, allProducts, sortByPrice, sortByDate, getMyProduct, getProduct, productsByCategory,productsByCategoryDate, productsByCategoryPrice, searchProduct } = require("../controllers/ProductController");
+const {
+  addProduct,
+  editProduct,
+  deleteProduct,
+  getProducts,
+  allProducts,
+  sortByPrice,
+  sortByDate,
+  getMyProduct,
+  getProduct,
+  productsByCategory,
+  productsByCategoryDate,
+  productsByCategoryPrice,
+  searchProduct,
+  searchCategoryProduct
+} = require("../controllers/ProductController");
 
 // import middleware here
 const auth = require("../middleware/auth");
@@ -12,7 +27,7 @@ const { checkRole } = require("../middleware/checkRole");
 
 // add product by admin to respective category
 router.post(
-  '/add-product/:categoryID',
+  "/add-product/:categoryID",
   [
     auth,
     [
@@ -28,9 +43,9 @@ router.post(
   addProduct
 );
 
-// edit product by owner 
+// edit product by owner
 router.post(
-  '/edit-product/:categoryID/:productID',
+  "/edit-product/:categoryID/:productID",
   [
     auth,
     [
@@ -47,17 +62,15 @@ router.post(
 );
 
 // delete product by owner of respective product
-router.delete('/delete-product/:productID', [auth], deleteProduct);
+router.delete("/delete-product/:productID", [auth], deleteProduct);
 
 // get all products by respective owner
 
-router.get('/all-products', [auth], getProducts);
+router.get("/all-products", [auth], getProducts);
 
-// get product with id 
+// get product with id
 
-router.get('/:productID',[auth],getMyProduct);
-
-
+router.get("/:productID", [auth], getMyProduct);
 
 /*
 ........customer routes ........... for getting product
@@ -65,27 +78,25 @@ router.get('/:productID',[auth],getMyProduct);
 */
 
 // show all products to customer
-router.get('/customer/products', allProducts);
-
+router.get("/customer/products", allProducts);
 
 // show product with id
 
-router.get('/customer/:productID',getProduct);
+router.get("/customer/:productID", getProduct);
 
 // show all products of respective category
 
-router.get('/category-products/:categoryID',productsByCategory);
-
+router.get("/category-products/:categoryID", productsByCategory);
 
 /*......................Category product sorting................ */
-// get products of category and sort by price 
+// get products of category and sort by price
 
 /* supply -1 in params to sort from highest to lowest
   supply 1 in params to sort from low to high
 
 */
 
-router.get('/category-products/:categoryID/:price',productsByCategoryPrice);
+router.get("/category-products/:categoryID/:price", productsByCategoryPrice);
 
 // get products of category and sort by date
 
@@ -94,8 +105,7 @@ router.get('/category-products/:categoryID/:price',productsByCategoryPrice);
 
 */
 
-router.get('/category-products/:categoryID/:date',productsByCategoryDate);
-
+router.get("/category-products/:categoryID/:date", productsByCategoryDate);
 
 /* ....................ALL PRODUCTS SORTING..............  */
 // sorting products with price
@@ -105,8 +115,7 @@ router.get('/category-products/:categoryID/:date',productsByCategoryDate);
 
 */
 
-router.get('/sort-price-products/:price', sortByPrice);
-
+router.get("/sort-price-products/:price", sortByPrice);
 
 // sorting products with date
 
@@ -115,12 +124,12 @@ router.get('/sort-price-products/:price', sortByPrice);
 
 */
 
-router.get('/sort-date-products/:date', sortByDate);
+router.get("/sort-date-products/:date", sortByDate);
 
+// search-all products
+router.get("/search-product/:title", searchProduct);
 
-
-router.get('/search-product/:title',searchProduct);
-
-
+// search-category product
+router.get("/category/:categoryID/:title", searchCategoryProduct);
 
 module.exports = router;

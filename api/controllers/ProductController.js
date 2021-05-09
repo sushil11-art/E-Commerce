@@ -154,7 +154,7 @@ exports.allProducts=async(req,res,next)=>{
 exports.productsByCategory=async(req,res,next)=>{
   try{
     const products=await Product.find({categoryID:req.params.categoryID});
-    console.log(products);
+    // console.log(products);
     res.json({products});
   }
   catch(err){
@@ -243,7 +243,7 @@ exports.sortByPrice=async(req,res,next)=>{
   try{
     // const sort=req.params.price;
     const products=await Product.find().sort({price:sort});
-    console.log(products);
+    // console.log(products);
     res.json({products});
   }
   catch(err){
@@ -263,7 +263,7 @@ exports.sortByDate=async(req,res,next)=>{
   try{
     // const sort=req.params.price;
     const products=await Product.find().sort({date:sort});
-    console.log(products);
+    // console.log(products);
     res.json({products});
   }
   catch(err){
@@ -272,7 +272,35 @@ exports.sortByDate=async(req,res,next)=>{
 }
 
 exports.searchProduct=async(req,res,next)=>{
-  console.log("I am firing ")
+  let title=req.params.title;
+  try{
+  if (title == null){
+    const products=await Product.find();
+    return res.json({products});
 
+  }
+     const products=await Product.find({title: {$regex: title, $options: 'i'}})
+      return res.json({products});
+
+      // console.log(products);
+  }
+  catch(err){
+    return res.status(500).send("Server error");
+  } 
 }
 
+exports.searchCategoryProduct=async(req,res,next)=>{
+  try{
+    const title=req.params.title;
+    const products=await Product.find({categoryID:req.params.categoryID,title: {$regex: title, $options: 'i'}});
+    // console.log(products);
+    return res.json({products});
+  }
+  catch(err){
+     if (err.kind === "ObjectId") {
+      return res.status(404).json({ msg: "Products not found with that category" });
+    }
+    return res.status(500).send("Server error");
+  }
+
+}

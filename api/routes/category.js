@@ -25,6 +25,6 @@ router.post('/edit-category/:id', [auth, [body("name", "Name is required").not()
 router.delete('/delete-category/:id', [auth], deleteCategory);
 
 // get category by all user
-router.get('/all-categories',getCategories);
+router.get('/all-categories',[auth],getCategories);
 
 module.exports = router;

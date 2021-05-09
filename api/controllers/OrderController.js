@@ -9,6 +9,9 @@ const client = require("twilio")(accountSid, authToken);
 
 // place order by customer
 
+
+// .......................customer..................
+
 exports.placeOrder = async (req, res, next) => {
   // const cart=await Cart({user:req.user.id}).populate('products._id');
   // console.log(cart);
@@ -101,6 +104,8 @@ exports.placeOrder = async (req, res, next) => {
   }
 };
 
+
+// get all orders placed by user
 exports.getMyOrders = async (req, res, next) => {
   try {
     const orders = await Order.find({ user: req.user.id });
@@ -112,6 +117,8 @@ exports.getMyOrders = async (req, res, next) => {
 };
 // mongodb+srv://Sushil:<password>@cluster0.ongpn.mongodb.net/test
 
+
+// cancel order by user who placed user
 exports.cancelOrder = async (req, res, next) => {
   try {
     const orderID = req.params.orderID;
@@ -133,6 +140,7 @@ exports.cancelOrder = async (req, res, next) => {
   }
 };
 
+// get order details by user who placed order
 exports.orderDetails = async (req, res, next) => {
   try {
     const orderID = req.params.orderID;
@@ -143,6 +151,65 @@ exports.orderDetails = async (req, res, next) => {
     if (order.user.toString() !== req.user.id) {
       return res.status(404).json({ msg: "This order is not placed by you" });
     }
+    // order.orderStatus="Cancelled"
+    // await order.save()
+    res.json({ order });
+  } catch (err) {
+    if (err.kind === "ObjectId") {
+      return res.status(404).json({ msg: "Order not found with that id" });
+    }
+    return res.status(500).send("Server error");
+  }
+};
+
+
+// ............................change delivery status admin..............
+
+exports.changeDeliveryStatus = async (req, res, next) => {
+  try {
+    const orderID = req.params.orderID;
+    const deliveryStatus=req.body.status;
+    const order = await Order.findById(orderID);
+    if (!order) {
+      return res.status(404).json({ msg: "Order not found with that id" });
+    }
+    // if (order.user.toString() !== req.user.id) {
+    //   return res.status(404).json({ msg: "This order is not placed by you" });
+    // }
+    order.deliveryStatus = deliveryStatus
+    await order.save();
+    res.json({ order });
+  } catch (err) {
+    if (err.kind === "ObjectId") {
+      return res.status(404).json({ msg: "Order not found with that id" });
+    }
+    return res.status(500).send("Server error");
+  }
+};
+
+// get al orders by admin.............
+exports.getOrdersAdmin = async (req, res, next) => {
+  try {
+    const orders = await Order.find();
+    // console.log(products);
+    res.json({ orders });
+  } catch (err) {
+    return res.status(500).send("Server error");
+  }
+};
+
+
+// get order details by admin who placed order
+exports.orderDetailsAdmin = async (req, res, next) => {
+  try {
+    const orderID = req.params.orderID;
+    const order = await Order.findById(orderID);
+    if (!order) {
+      return res.status(404).json({ msg: "Order not found with that id" });
+    }
+    // if (order.user.toString() !== req.user.id) {
+    //   return res.status(404).json({ msg: "This order is not placed by you" });
+    // }
     // order.orderStatus="Cancelled"
     // await order.save()
     res.json({ order });

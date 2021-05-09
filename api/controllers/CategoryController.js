@@ -9,9 +9,10 @@ exports.addCategory = async (req, res, next) => {
     return res.status(400).json({ errors: errors.array() });
   }
   try{
-    console.log(req.body.name);
+    // console.log(req.body.name);
       const newCategory=new Category({
           name:req.body.name,
+          user:req.user.id
       })
       const category= await newCategory.save();
       return res.json({ category});
@@ -37,11 +38,15 @@ exports.editCategory=async(req,res,next)=>{
     try{
 
       const category=await Category.findById(categoryId);
-      console.log(category);
+      // console.log(category);
       if(!category){
         return res.status(404).json({ msg: "Category not found with that id" });
       }
+      if (category.user.toString() !== req.user.id) {
+      return res.status(401).json({ msg: "USer not authorized" });
+      }
       category.name=name;
+      category.user=req.user.id;
       const editCategory=await category.save();
       return res.json({editCategory});
     }
@@ -61,9 +66,9 @@ exports.deleteCategory=async(req,res,next)=>{
     if (!category) {
       return res.status(404).json({ msg: "Category not found with that id" });
     }
-    // if (post.user.toString() !== req.user.id) {
-    //   return res.status(401).json({ msg: "USer not authorized" });
-    // }
+    if (category.user.toString() !== req.user.id) {
+      return res.status(401).json({ msg: "USer not authorized" });
+    }
     await category.remove();
     res.json({ msg: "Category removed sucessfully" });
   } catch (err) {
@@ -80,7 +85,7 @@ exports.deleteCategory=async(req,res,next)=>{
 
 exports.getCategories=async(req,res,next)=>{
   try{
-    const categories=await Category.find();
+    const categories=await Category.find({user:req.user.id});
     // console.log(categories)
     res.json({categories});
   }

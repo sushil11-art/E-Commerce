@@ -1,10 +1,17 @@
 const mongoose = require("mongoose");
 const express = require("express");
-const { placeOrder, getMyOrders, cancelOrder ,orderDetails } = require("../controllers/OrderController");
+const {
+  placeOrder,
+  getMyOrders,
+  cancelOrder,
+  orderDetails,
+  orderDetailsAdmin,
+  changeDeliveryStatus,
+  getOrdersAdmin
+} = require("../controllers/OrderController");
 const auth = require("../middleware/auth");
 const router = express.Router();
 const { body, validationResult } = require("express-validator");
-
 
 // place order by customer
 router.post(
@@ -12,26 +19,41 @@ router.post(
   [
     auth,
     [
-      body("phoneNumber", "Must enter a valid phone number").not().isEmpty().isMobilePhone(),
+      body("phoneNumber", "Must enter a valid phone number")
+        .not()
+        .isEmpty()
+        .isMobilePhone(),
       body("fullName", "Please enter full name").not().isEmpty(),
       body("country", "Enter country name").not().isEmpty(),
-        
     ],
   ],
   placeOrder
 );
 
 // getl all orders of respective customer
-router.get("/getMyOrders",[auth],getMyOrders);
-
+router.get("/getMyOrders", [auth], getMyOrders);
 
 // cancel order by customer
-router.post("/cancel-order/:orderID",[auth],cancelOrder);
+router.post("/cancel-order/:orderID", [auth], cancelOrder);
 
 // get order details by customer
 
-router.get("/order-details/:orderID",[auth],orderDetails);
 
+
+router.get("/order-details/:orderID", [auth], orderDetails);
+
+
+// ........admin.......................................................
+
+// change delivery status
+
+router.post("/status/:orderID", [auth], changeDeliveryStatus);
+
+// get all ordersby admin
+router.get("/getOrdersAdmin", [auth], getOrdersAdmin);
+
+
+router.get("/order-details-admin/:orderID", [auth], orderDetailsAdmin);
 
 
 module.exports = router;

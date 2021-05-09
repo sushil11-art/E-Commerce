@@ -7,6 +7,10 @@ const CategorySchema=new Schema({
         type:String,
         unique:true,
         required:true
+    },
+    user:{
+        type:Schema.Types.ObjectId,
+        ref:'User'
     }
 })
 

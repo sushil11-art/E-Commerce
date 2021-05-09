@@ -7,6 +7,7 @@ import {
   categoryProductsExpensive,
   categoryProductsNew,
   categoryProductsOld,
+  categoryProductSearch
 } from "../../actions/products";
 // import camera from "./camera.jpg";
 // import headphone from "./headphone.jpeg";
@@ -85,8 +86,22 @@ const Category = (props) => {
       );
     });
 
+  const [formData,setFormData]=useState({
+    search:''
+  })
+
+  const onCategorySearchProduct = async(e) => setFormData({...formData,[e.target.name]:e.target.value})
+    
+  const {search}=formData;
+  // console.log(search)
+  useEffect(()=>{
+    dispatch(categoryProductSearch(categoryID,search))
+  },[search,categoryID,dispatch])
+
+
   return loading && !products.length > 0 ? (
     <Spinner />
+  
   ) : (
     <Fragment>
       <div className="product-container">
@@ -135,22 +150,25 @@ const Category = (props) => {
               </li>
             </ul>
           </div>
-          <form className="d-flex">
+           <form className="d-flex">
             <input
               className="form-control me-2"
               type="search"
+              name="search"
+              value={search}
               placeholder="Search product"
               aria-label="Search"
+              onChange={(e) => onCategorySearchProduct(e)}
             />
             {/* <button className="btn btn-outline-success" style={{borderRadius :'0px'}} type="submit">Search</button> */}
-            <button type="submit">
-              <i className="fas fa-3x fa-search" type="submit"></i>
-            </button>
+            {/* <button> */}
+              <i className="fas fa-3x fa-search"></i>
+            {/* </button> */}
           </form>
         </div>
         <section class="text-gray-600 body-font">
           <div class="container px-5 py-24 mx-auto">
-            <div class="flex flex-wrap -m-4">{renderProducts}</div>
+            <div class="flex flex-wrap -m-4">{products.length >0 ? renderProducts : <><div class="no-product" ><Spinner /><h3>No products found,Please reload</h3></div></>}</div>
             <br />
             <br />
             <ReactPaginate

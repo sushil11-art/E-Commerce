@@ -104,3 +104,13 @@
   color: rgba(34, 49, 63, 1);
   background-color: #ffe4b5;
 }
+
+.no-product {
+  display: flex;
+  justify-content: space-evenly;
+  /* flex-wrap: wrap; */
+}
+
+.no-product h3 {
+  color: red;
+}

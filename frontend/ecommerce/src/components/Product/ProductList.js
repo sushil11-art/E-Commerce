@@ -49,7 +49,7 @@ const ProductList = () => {
     dispatch(filterProductsOld(1));
   };
 
-  const renderProducts = products
+    const renderProducts = products
     .slice(pageVisted, pageVisted + productsPerPage)
     .map((product) => {
       var str = product.photo;
@@ -82,6 +82,8 @@ const ProductList = () => {
         </Fragment>
       );
     });
+  
+  
   const pageCount = Math.ceil(products.length / productsPerPage);
 
   const changePage = ({ selected }) => {
@@ -161,14 +163,14 @@ const ProductList = () => {
               onChange={(e) => onSearchProduct(e)}
             />
             {/* <button className="btn btn-outline-success" style={{borderRadius :'0px'}} type="submit">Search</button> */}
-            <button type="submit">
-              <i className="fas fa-3x fa-search" type="submit"></i>
-            </button>
+            {/* <button> */}
+              <i className="fas fa-3x fa-search"></i>
+            {/* </button> */}
           </form>
         </div>
         <section class="text-gray-600 body-font">
           <div class="container px-5 py-24 mx-auto">
-            <div class="flex flex-wrap -m-4">{renderProducts}</div>
+            <div class="flex flex-wrap -m-4">{products.length >0 ? renderProducts : <><div class="no-product" ><Spinner /><h3>No products found,Please reload</h3></div></>}</div>
             <br />
             <br />
             <ReactPaginate
