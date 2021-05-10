@@ -14,7 +14,7 @@ exports.addToCart = async (req, res, next) => {
     if (cart.length == 0) {
       const newCart = new Cart();
       newCart.user = req.user.id;
-      newCart.products.push({ _id: req.params.productID, quantity: 1 });
+      newCart.products.push({ _id: req.params.productID, quantity: 1,ownerID:product.ownerID });
       newCart.subTotal = product.price;
       const carts = await newCart.save();
       return res.json({ carts });
@@ -31,7 +31,7 @@ exports.addToCart = async (req, res, next) => {
       const updatedCart = await cart[0].save();
       return res.json({ updatedCart });
     }
-    cart[0].products.push({ _id: req.params.productID, quantity: quantity });
+    cart[0].products.push({ _id: req.params.productID, quantity: quantity,ownerID:product.ownerID});
     cart[0].subTotal = cart[0].subTotal + product.price;
     const newCartItems = await cart[0].save();
     return res.json({ newCartItems });

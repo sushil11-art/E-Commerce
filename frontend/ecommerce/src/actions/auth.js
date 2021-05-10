@@ -83,14 +83,16 @@ export const googleLogin = (tokenId,history) => async (dispatch) => {
     dispatch({ type: LOGIN_SUCCESS, payload: res.data });
     history.push('/products')
   } catch (err) {
-     const errors = err.response.data.errors;
+    const errors = err.response.data.errors;
     // console.log(err);
     if (errors) {
       errors.forEach((error) => dispatch(setAlert(error.msg, "danger")));
     }
     dispatch({ type: LOGIN_FAIL });
   }
-};
+    
+}
+
 
 // export const loadCurrentUser=()=>async(dispatch)=>{
 //   try{

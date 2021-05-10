@@ -304,3 +304,18 @@ exports.searchCategoryProduct=async(req,res,next)=>{
   }
 
 }
+
+exports.rangeProducts=async(req,res,next)=>{
+  const initial=req.params.initial;
+  const final=req.params.final;
+  // console.log(initial);
+  // console.log(final)
+  try{
+    const products=await Product.find({price:{$gte:initial,$lte:final}});
+    console.log(products);
+    res.json({products});
+  }
+  catch(err){
+    return res.status(500).send("Server error");
+  }
+}

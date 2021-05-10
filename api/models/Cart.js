@@ -13,6 +13,7 @@ const CartSchema = new Schema({
         ref: "Product",
       },
       quantity: { type: Number, required: true },
+      ownerID:{type:Schema.Types.ObjectId,ref:"User"}
     },
   ],
   subTotal: {

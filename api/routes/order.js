@@ -5,9 +5,10 @@ const {
   getMyOrders,
   cancelOrder,
   orderDetails,
-  orderDetailsAdmin,
-  changeDeliveryStatus,
-  getOrdersAdmin
+  orderDetailsSuperAdmin,
+  changeDeliveryStatusSuperAdmin,
+  getOrdersSuperAdmin,
+  getStatusOrderProductAdmin,
 } = require("../controllers/OrderController");
 const auth = require("../middleware/auth");
 const router = express.Router();
@@ -38,22 +39,27 @@ router.post("/cancel-order/:orderID", [auth], cancelOrder);
 
 // get order details by customer
 
-
-
 router.get("/order-details/:orderID", [auth], orderDetails);
 
+// ........superadmin ..................admin.......................................................
 
-// ........admin.......................................................
+// change delivery status by super admin
 
-// change delivery status
+router.post("/status/:orderID", [auth], changeDeliveryStatusSuperAdmin);
 
-router.post("/status/:orderID", [auth], changeDeliveryStatus);
+// get all ordersby  superadmin..........
+router.get("/order-superadmin", [auth], getOrdersSuperAdmin);
 
-// get all ordersby admin
-router.get("/getOrdersAdmin", [auth], getOrdersAdmin);
+// get order details by superadmin
+router.get(
+  "/order-details-superadmin/:orderID",
+  [auth],
+  orderDetailsSuperAdmin
+);
 
+// .....admin protected router
 
-router.get("/order-details-admin/:orderID", [auth], orderDetailsAdmin);
-
+// get staus of order products of respective owner
+router.get("/status-product/:status", [auth],getStatusOrderProductAdmin);
 
 module.exports = router;

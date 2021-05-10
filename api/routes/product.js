@@ -16,7 +16,8 @@ const {
   productsByCategoryDate,
   productsByCategoryPrice,
   searchProduct,
-  searchCategoryProduct
+  searchCategoryProduct,
+  rangeProducts
 } = require("../controllers/ProductController");
 
 // import middleware here
@@ -80,6 +81,11 @@ router.get("/:productID", [auth], getMyProduct);
 // show all products to customer
 router.get("/customer/products", allProducts);
 
+
+// get all products within price range 
+
+router.get("/customer/products/:initial/:final",rangeProducts);
+
 // show product with id
 
 router.get("/customer/:productID", getProduct);
@@ -131,5 +137,9 @@ router.get("/search-product/:title", searchProduct);
 
 // search-category product
 router.get("/category/:categoryID/:title", searchCategoryProduct);
+
+
+
+
 
 module.exports = router;

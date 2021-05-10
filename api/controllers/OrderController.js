@@ -1,6 +1,10 @@
 const Cart = require("../models/Cart");
 const Order = require("../models/Order");
 const { validationResult } = require("express-validator");
+const {
+  TrustProductsEntityAssignmentsContext,
+} = require("twilio/lib/rest/trusthub/v1/trustProducts/trustProductsEntityAssignments");
+const { isValidObjectId, Mongoose } = require("mongoose");
 
 // to send sms
 const accountSid = process.env.TWILIO_ACCOUNT_SID;
@@ -8,7 +12,6 @@ const authToken = process.env.TWILIO_AUTH_TOKEN;
 const client = require("twilio")(accountSid, authToken);
 
 // place order by customer
-
 
 // .......................customer..................
 
@@ -28,7 +31,7 @@ exports.placeOrder = async (req, res, next) => {
       return res.status(404).json({ msg: "User cart is empty" });
     }
     const products = cart.products.map((i) => {
-      return { quantity: i.quantity, product: { ...i._id._doc } };
+      return { quantity: i.quantity, product: { ...i._id._doc },ownerID:i.ownerID };
     });
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
@@ -93,7 +96,6 @@ exports.placeOrder = async (req, res, next) => {
         console.log(err);
       });
 
-
     // clearing cart of user after order processed
     cart.subTotal = 0;
     cart.products = [];
@@ -103,7 +105,6 @@ exports.placeOrder = async (req, res, next) => {
     return res.status(500).send("Server error");
   }
 };
-
 
 // get all orders placed by user
 exports.getMyOrders = async (req, res, next) => {
@@ -116,7 +117,6 @@ exports.getMyOrders = async (req, res, next) => {
   }
 };
 // mongodb+srv://Sushil:<password>@cluster0.ongpn.mongodb.net/test
-
 
 // cancel order by user who placed user
 exports.cancelOrder = async (req, res, next) => {
@@ -162,13 +162,12 @@ exports.orderDetails = async (req, res, next) => {
   }
 };
 
-
 // ............................change delivery status admin..............
 
-exports.changeDeliveryStatus = async (req, res, next) => {
+exports.changeDeliveryStatusSuperAdmin = async (req, res, next) => {
   try {
     const orderID = req.params.orderID;
-    const deliveryStatus=req.body.status;
+    const deliveryStatus = req.body.status;
     const order = await Order.findById(orderID);
     if (!order) {
       return res.status(404).json({ msg: "Order not found with that id" });
@@ -176,7 +175,7 @@ exports.changeDeliveryStatus = async (req, res, next) => {
     // if (order.user.toString() !== req.user.id) {
     //   return res.status(404).json({ msg: "This order is not placed by you" });
     // }
-    order.deliveryStatus = deliveryStatus
+    order.deliveryStatus = deliveryStatus;
     await order.save();
     res.json({ order });
   } catch (err) {
@@ -187,10 +186,10 @@ exports.changeDeliveryStatus = async (req, res, next) => {
   }
 };
 
-// get al orders by admin.............
-exports.getOrdersAdmin = async (req, res, next) => {
+// get al orders by superadmin.............
+exports.getOrdersSuperAdmin = async (req, res, next) => {
   try {
-    const orders = await Order.find();
+    const orders = await Order.find().deepPopulate(["products.product.ownerID","user"]).exec();
     // console.log(products);
     res.json({ orders });
   } catch (err) {
@@ -198,12 +197,11 @@ exports.getOrdersAdmin = async (req, res, next) => {
   }
 };
 
-
-// get order details by admin who placed order
-exports.orderDetailsAdmin = async (req, res, next) => {
+// get order details by superadmin
+exports.orderDetailsSuperAdmin = async (req, res, next) => {
   try {
     const orderID = req.params.orderID;
-    const order = await Order.findById(orderID);
+    const order = await Order.findById(orderID).deepPopulate(["products.product.ownerID","user"]).exec();;
     if (!order) {
       return res.status(404).json({ msg: "Order not found with that id" });
     }
@@ -220,3 +218,35 @@ exports.orderDetailsAdmin = async (req, res, next) => {
     return res.status(500).send("Server error");
   }
 };
+
+// .......................................
+
+exports.getStatusOrderProductAdmin= async (req, res, next) => {
+  try {
+    const owner=req.user.id
+    const status=req.params.status
+    // console.log(owner);
+    // 6088192d9c34df23489c3292
+    // console.log("6098c20d03660125b0b8f48a");
+    const orders=await Order.find({"products.ownerID":req.user.id,deliveryStatus:status}).deepPopulate(["products.product.ownerID","user"]).exec();
+    // console.log(orders);
+    // console.log(orders)
+    let products=[]
+    // const newOrder=orders.find(or)
+    const newOrder=orders.find(order=>{
+      return order.products.find(product=>{
+        // console.log(product);
+        if(product.ownerID.toString()==req.user.id.toString()){
+          products.push(product);
+        };
+        // console.log(product)
+      })
+    })
+    // console.log(products)
+    res.json({products});
+  } catch (err) {
+    return res.status(500).send("Server error");
+  }
+};
+
+
