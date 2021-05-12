@@ -18,6 +18,7 @@ import {
 
 import ReactPaginate from "react-paginate";
 import Spinner from "../layouts/Spinner";
+import { AddToCart } from "../../actions/cart";
 
 const ProductList = () => {
   //  const classNamees = useStyles();
@@ -48,7 +49,10 @@ const ProductList = () => {
   const oldProducts = () => {
     dispatch(filterProductsOld(1));
   };
-
+  function AddProduct(productID){
+    // console.log(productID);
+    dispatch(AddToCart(productID));
+  }
   const renderProducts = products
     .slice(pageVisted, pageVisted + productsPerPage)
     .map((product) => {
@@ -67,16 +71,22 @@ const ProductList = () => {
                 alt="ecommerce"
                 src={source}
                 className="object-cover object-center w-full h-full block"
+                
               />
             </Link>
             <div className="mt-4">
               <h3 className="text-gray-500 text-xs tracking-widest title-font mb-1">
-                {product.categoryID}
+                CODE&nbsp;{product._id}
               </h3>
               <h2 className="text-gray-900 title-font text-lg font-medium">
                 {product.title}
               </h2>
               <p className="mt-1">Nrs.{product.price}</p>
+            </div>
+            <div style={{display:"flex",justifyContent:"center",alignItems:"center"}}>
+            <button onClick={()=>AddProduct(product._id)} type="button" className="btn btn-danger" style={{width:'60%'}}><i class="fas fa-2x fa-cart-plus" style={{color:'red'}}></i>&nbsp;&nbsp;Add To cart</button>
+            &nbsp;
+            <button type="button" className="btn btn-primary" style={{width:'40%'}}><i class="fas fa-2x fa-heart" style={{color:'orange'}}></i>&nbsp;&nbsp;Wishlist</button>
             </div>
           </div>
         </Fragment>

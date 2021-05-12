@@ -14,6 +14,10 @@ export const PRODUCT = "PRODUCT";
 
 export const CATEGORIES = "CATEGORIES";
 
+
+export const ADD_TO_CART="ADD_TO_CART";
+export const REMOVE_FROM_CART="REMOVE_FROM_CART";
+
 // export const CHEAP_PRODUCTS="CHEAP_PRODUCTS"
 // export const EXPENSIVE_PRODUCTS="EXPENSIVE_PRODUCTS"
 // export const NEW_PRODUCTS="EXPENSIVE_PRODUCTS"

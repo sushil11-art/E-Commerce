@@ -4,7 +4,7 @@ const mongoose = require("mongoose");
 
 exports.addToCart = async (req, res, next) => {
   const productID = req.params.productID;
-  let cart = await Cart.find({ user: req.user.id });
+  let cart = await Cart.find({ user: req.user.id }).deepPopulate("products._id.categoryID").exec();
   try {
     const product = await Product.findById(productID);
     if (!product) {

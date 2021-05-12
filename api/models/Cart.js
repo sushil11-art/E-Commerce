@@ -1,5 +1,6 @@
 const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
+var deepPopulate = require('mongoose-deep-populate')(mongoose);
 
 const CartSchema = new Schema({
   user: {
@@ -23,4 +24,5 @@ const CartSchema = new Schema({
   },
 });
 
+CartSchema.plugin(deepPopulate)
 module.exports = mongoose.model("Cart", CartSchema);

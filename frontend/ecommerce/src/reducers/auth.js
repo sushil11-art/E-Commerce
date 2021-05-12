@@ -21,7 +21,9 @@ export default function (state = initialState, action) {
       return { ...state, token: null, loading: false };
     case LOGIN_SUCCESS:
     case GOOGLE_LOGIN_SUCCESS:
+      // console.log(payload.token);
       localStorage.setItem("token", payload.token);
+      // console.log(localStorage.getItem("token"));
       return { ...state, ...payload, loading: false };
 
     case REGISTER_FAIL:

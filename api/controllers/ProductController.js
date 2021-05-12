@@ -136,11 +136,11 @@ exports.getMyProduct=async(req,res,next)=>{
 
 
 /*................custoer controller ...............*/
-// get all products by customer
+// get all products by customers
 
 exports.allProducts=async(req,res,next)=>{
   try{
-    const products=await Product.find();
+    const products=await Product.find().populate('categorID');
     // console.log(products);
     res.json({products});
   }
@@ -153,7 +153,7 @@ exports.allProducts=async(req,res,next)=>{
 
 exports.productsByCategory=async(req,res,next)=>{
   try{
-    const products=await Product.find({categoryID:req.params.categoryID});
+    const products=await Product.find({categoryID:req.params.categoryID}).populate('categorID');
     // console.log(products);
     res.json({products});
   }
@@ -215,11 +215,12 @@ exports.productsByCategoryDate=async(req,res,next)=>{
 exports.getProduct=async(req,res,next)=>{
   try{
     const productID=req.params.productID;
-  const product=await Product.findById(productID)
+  const product=await Product.findById(productID).populate('categoryID')
+  // console.log(product);
   if(!product){
     return res.status(404).json({ msg: "Product not found with that id" });
   }
-  res.json({product});
+  return res.json({product});
   }
   catch(err){
      if (err.kind === "ObjectId") {

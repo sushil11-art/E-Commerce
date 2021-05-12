@@ -9,7 +9,7 @@ const { checkRole } = require("../middleware/checkRole");
 // import controllers here
 const { addCategory, deleteCategory, editCategory, getCategories } = require("../controllers/CategoryController");
 
-// will make super admin protected later
+// will make admin protected later
 
 // /api/category/add-category
 router.post('/add-category', [auth, [body("name", "Name is required").not().isEmpty(),]
@@ -25,6 +25,6 @@ router.post('/edit-category/:id', [auth, [body("name", "Name is required").not()
 router.delete('/delete-category/:id', [auth], deleteCategory);
 
 // get category by all user
-router.get('/all-categories',[auth],getCategories);
+router.get('/all-categories',getCategories);
 
 module.exports = router;

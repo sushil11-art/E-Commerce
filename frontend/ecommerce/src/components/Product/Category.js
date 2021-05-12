@@ -81,6 +81,11 @@ const Category = (props) => {
               </h2>
               <p className="mt-1">Nrs.{product.price}</p>
             </div>
+            <div style={{display:"flex",justifyContent:"center",alignItems:"center"}}>
+            <button type="button" className="btn btn-danger" style={{width:'60%'}}><i class="fas fa-2x fa-cart-plus" style={{color:'red'}}></i>&nbsp;&nbsp;Add To cart</button>
+            &nbsp;
+            <button type="button" className="btn btn-primary" style={{width:'40%'}}><i class="fas fa-2x fa-heart" style={{color:'orange'}}></i>&nbsp;&nbsp;Wishlist</button>
+            </div>
           </div>
         </Fragment>
       );

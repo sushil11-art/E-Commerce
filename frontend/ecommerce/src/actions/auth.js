@@ -94,13 +94,3 @@ export const googleLogin = (tokenId,history) => async (dispatch) => {
 }
 
 
-// export const loadCurrentUser=()=>async(dispatch)=>{
-//   try{
-//   const res=await axios.get("http://localhost:4000/auth/api/currentUser")
-//   console.log(res);
-//   }
-//   catch(err){
-//     console.log(err);
-//   }
-
-// }

@@ -85,7 +85,7 @@ exports.deleteCategory=async(req,res,next)=>{
 
 exports.getCategories=async(req,res,next)=>{
   try{
-    const categories=await Category.find({user:req.user.id});
+    const categories=await Category.find();
     // console.log(categories)
     res.json({categories});
   }
