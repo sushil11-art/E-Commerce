@@ -100,10 +100,10 @@ exports.deleteProduct=async(req,res,next)=>{
 
 // get-all products by owner controller
 exports.getProducts=async(req,res,next)=>{
-    console.log(req.user.id);
+    // console.log(req.user.id);
   try{
     const products=await Product.find({ownerID:req.user.id});
-    console.log(products);
+    // console.log(products);
     res.json({products});
   }
   catch(err){

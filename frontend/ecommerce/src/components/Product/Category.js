@@ -1,6 +1,6 @@
 import React, { useEffect, useState, Fragment } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { Link } from "react-router-dom";
+import { Link,useHistory,withRouter } from "react-router-dom";
 import {
   categoryProducts,
   categoryProductsCheapest,
@@ -9,6 +9,8 @@ import {
   categoryProductsOld,
   categoryProductSearch
 } from "../../actions/products";
+import { AddToCart } from "../../actions/cart";
+
 // import camera from "./camera.jpg";
 // import headphone from "./headphone.jpeg";
 // import watch from "./watch.jpg";
@@ -52,6 +54,16 @@ const Category = (props) => {
     dispatch(categoryProductsOld(categoryID, 1));
   };
 
+  const token = useSelector(state => state.auth.token)
+  const browserHistory = useHistory();
+  function AddProduct(productID){
+    // console.log(productID);
+    if(!token){
+        browserHistory.push("/login")
+
+    }
+    dispatch(AddToCart(productID,props.history));
+  }
   const renderProducts = products
     .slice(pageVisted, pageVisted + productsPerPage)
     .map((product) => {
@@ -82,7 +94,7 @@ const Category = (props) => {
               <p className="mt-1">Nrs.{product.price}</p>
             </div>
             <div style={{display:"flex",justifyContent:"center",alignItems:"center"}}>
-            <button type="button" className="btn btn-danger" style={{width:'60%'}}><i class="fas fa-2x fa-cart-plus" style={{color:'red'}}></i>&nbsp;&nbsp;Add To cart</button>
+            <button type="button" onClick={()=>AddProduct(product._id)} className="btn btn-danger" style={{width:'60%'}}><i class="fas fa-2x fa-cart-plus" style={{color:'red'}}></i>&nbsp;&nbsp;Add To cart</button>
             &nbsp;
             <button type="button" className="btn btn-primary" style={{width:'40%'}}><i class="fas fa-2x fa-heart" style={{color:'orange'}}></i>&nbsp;&nbsp;Wishlist</button>
             </div>
@@ -197,4 +209,4 @@ const Category = (props) => {
   );
 };
 
-export default Category;
+export default withRouter(Category);

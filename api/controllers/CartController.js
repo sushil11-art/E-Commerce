@@ -45,7 +45,7 @@ exports.addToCart = async (req, res, next) => {
 
 exports.removeFromCart = async (req, res, next) => {
   const productID = req.params.productID;
-  let cart = await Cart.find({ user: req.user.id });
+  let cart = await Cart.find({ user: req.user.id }).deepPopulate("products._id.categoryID").exec();;
   if (cart.length == 0) {
     return res.status(404).json({ msg: "User has not added anything to cart" });
   }
@@ -89,3 +89,13 @@ exports.removeFromCart = async (req, res, next) => {
   }
 };
 
+exports.getCart=async(req,res,next)=>{
+  try{
+     let cart = await Cart.find({ user: req.user.id }).deepPopulate("products._id.categoryID").exec();
+     return res.json({cart});
+  }
+  catch(err){
+    return res.status(500).send("Server error");
+
+  }
+}

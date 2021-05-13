@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Fragment } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { Link } from "react-router-dom";
+import { Link ,useHistory,withRouter} from "react-router-dom";
 import {
   customerProducts,
   filterProductsCheapest,
@@ -20,7 +20,7 @@ import ReactPaginate from "react-paginate";
 import Spinner from "../layouts/Spinner";
 import { AddToCart } from "../../actions/cart";
 
-const ProductList = () => {
+const ProductList = ({history}) => {
   //  const classNamees = useStyles();
 
   const [pageNumber, setPageNumber] = useState(0);
@@ -49,9 +49,15 @@ const ProductList = () => {
   const oldProducts = () => {
     dispatch(filterProductsOld(1));
   };
+   const token = useSelector(state => state.auth.token)
+  const browserHistory = useHistory();
   function AddProduct(productID){
     // console.log(productID);
-    dispatch(AddToCart(productID));
+    if(!token){
+        browserHistory.push("/login")
+
+    }
+    dispatch(AddToCart(productID,history));
   }
   const renderProducts = products
     .slice(pageVisted, pageVisted + productsPerPage)
@@ -111,6 +117,13 @@ const ProductList = () => {
   useEffect(() => {
     dispatch(searchProduct(search));
   }, [search, dispatch]);
+
+   
+    // useEffect(() => {
+    //     if (!token) {
+    //         browserHistory.push("/login")
+    //     }
+    // }, [token, browserHistory])
 
   return loading && !products.length > 0 ? (
     <Spinner />
@@ -215,4 +228,4 @@ const ProductList = () => {
   );
 };
 
-export default ProductList;
+export default withRouter(ProductList);

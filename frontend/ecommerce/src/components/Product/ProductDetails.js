@@ -1,8 +1,10 @@
 import React, { useEffect } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch, useSelector} from "react-redux";
 import { productDetails } from "../../actions/products";
-import {Link} from "react-router-dom"
+import {Link,useHistory,withRouter} from "react-router-dom"
 // import Spinner from "../layouts/Spinner";
+import { AddToCart } from "../../actions/cart";
+
 
 const ProductDetails = (props) => {
   // console.log(localStorage.getItem("token"));
@@ -14,12 +16,23 @@ const ProductDetails = (props) => {
     dispatch(productDetails(productID));
   }, [dispatch,productID]);
   const { product } = useSelector((state) => state.customerProduct);
-  console.log(product);
+  // console.log(product);
+   const token = useSelector(state => state.auth.token)
+  const browserHistory = useHistory();
+  function AddProduct(productID){
+    // console.log(productID);
+    if(!token){
+        browserHistory.push("/login")
+
+    }
+    dispatch(AddToCart(productID,props.history));
+  }
   if (
     Object.keys(product).length !== 0
     // product !== null ||
     // (Object.keys(product).length == 0 && product.constructor == Object)
   ) {
+ 
     const {categoryID}=product;
      var str = product.photo;
       var url = str.replace("/home/sushil/2021/E-Commerce/api/uploads/", "");
@@ -71,7 +84,7 @@ const ProductDetails = (props) => {
                     <span className="title-font font-medium text-2xl text-gray-900">
                       Nrs.{product.price}
                     </span>
-                    <button  style={{backgroundColor:"red"}} className="flex ml-auto text-white bg-indigo-500 border-0 py-2 px-6 focus:outline-none hover:bg-indigo-600 rounded">
+                    <button onClick={()=>AddProduct(product._id)} style={{backgroundColor:"red"}} className="flex ml-auto text-white bg-indigo-500 border-0 py-2 px-6 focus:outline-none hover:bg-indigo-600 rounded">
                       Add to Cart
                     </button>
                     <button className="rounded-full w-10 h-10 bg-gray-200 p-0 border-0 inline-flex items-center justify-center text-gray-500 ml-4">
@@ -133,4 +146,4 @@ const ProductDetails = (props) => {
   // var source = "http://localhost:4000/uploads/" + url;
   // const {product}= useSelector(state => state.customerProduct)
 };
-export default ProductDetails;
+export default withRouter(ProductDetails);

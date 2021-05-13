@@ -1,14 +1,19 @@
 import React, { useEffect, Fragment } from "react";
-import { connect, useSelector } from "react-redux"
+import {useDispatch, useSelector } from "react-redux"
 import { useHistory } from "react-router-dom";
+import { FetchCartItems } from "../../actions/cart";
+
 const Cart = () => {
     const token = useSelector(state => state.auth.token)
     const browserHistory = useHistory();
+    const dispatch=useDispatch();
     useEffect(() => {
         if (!token) {
             browserHistory.push("/login")
         }
-    }, [token, browserHistory])
+        dispatch(FetchCartItems())
+        
+    }, [token, browserHistory,FetchCartItems,dispatch])
     return (
         <Fragment>
             <br />
@@ -85,4 +90,4 @@ const Cart = () => {
     )
 }
 
-export default connect(null)(Cart);
+export default Cart;
