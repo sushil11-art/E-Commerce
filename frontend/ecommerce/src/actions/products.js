@@ -1,6 +1,6 @@
+// import base Url of axios
 import axios from "../axios/axios";
 import { PRODUCT, PRODUCTS, PRODUCT_FAIL } from "./types";
-// import axios from "axios";
 
 export const customerProducts = () => async (dispatch) => {
   try {

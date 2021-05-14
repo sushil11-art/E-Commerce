@@ -118,12 +118,13 @@ const ProductList = ({history}) => {
     dispatch(searchProduct(search));
   }, [search, dispatch]);
 
-   
-    // useEffect(() => {
-    //     if (!token) {
-    //         browserHistory.push("/login")
-    //     }
-    // }, [token, browserHistory])
+
+  // Reload the page after no match products
+   const refresh = ()=>{
+      // it re-renders the component
+     window.location.reload();
+  }
+  
 
   return loading && !products.length > 0 ? (
     <Spinner />
@@ -175,7 +176,7 @@ const ProductList = ({history}) => {
               </li>
             </ul>
           </div>
-          <form className="d-flex">
+          <form className="d-flex" onSubmit={(e)=>e.preventDefault()}>
             <input
               className="form-control me-2"
               type="search"
@@ -198,10 +199,31 @@ const ProductList = ({history}) => {
                 renderProducts
               ) : (
                 <>
-                  <div class="no-product">
-                    <Spinner />
-                    <h3>No products found,Please reload</h3>
-                  </div>
+                   <div class="no-product">
+                 <section className="flex items-center h-full p-16 bg-coolGray-50 text-coolGray-800">
+        <div className="container flex flex-col items-center justify-center px-5 mx-auto my-8">
+          <div className="max-w-md text-center">
+            <h2 className="mb-8 font-extrabold text-9xl text-coolGray-400">
+              <span className="sr-only">Error </span>404
+            </h2>
+            <p className="text-2xl font-semibold md:text-3xl text-coolGray-600">
+              Sorry, we couldn't find this page.
+            </p>
+            <p className="mt-4 mb-8">
+              But dont worry, you can find plenty of other things on our
+              products page
+            </p>
+            <button
+              onClick={refresh}
+              className="px-8 py-3 font-semibold rounded bg-violet-600 text-coolGray-50"
+            >
+            Reload
+            </button>
+          </div>
+        </div>
+      </section>
+      </div>
+                  
                 </>
               )}
             </div>

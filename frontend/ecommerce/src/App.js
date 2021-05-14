@@ -17,7 +17,6 @@ import setAuthToken from "./utils/setAuthToken";
 
 const App=() =>{  
   return (
-    // <Provider store={store}>
     <Router>
       <Fragment>
         <Navbar />
@@ -35,7 +34,6 @@ const App=() =>{
         </Switch>
       </Fragment>
     </Router>
-    // </Provider>
   );
 }
 

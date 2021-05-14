@@ -1,4 +1,8 @@
-import { ADD_TO_CART, REMOVE_FROM_CART } from "../actions/types";
+import {
+  ADD_TO_CART,
+  REMOVE_FROM_CART,
+  GET_CART_ITEMS,
+} from "../actions/types";
 
 const initialState = {
   // loading:true
@@ -15,18 +19,22 @@ export default function (state = initialState, action) {
   // console.log(subTotal);
   switch (type) {
     case ADD_TO_CART:
+    case REMOVE_FROM_CART:
       return {
         ...state,
-        products: payload.newCartItems.products,
-        subTotal: payload.newCartItems.subTotal,
-        user: payload.newCartItems.user,
-        loading:false
+        products: payload.carts.products,
+        subTotal: payload.carts.subTotal,
+        user: payload.carts.user,
+        loading: false,
       };
-
-    case REMOVE_FROM_CART:
-      return state;
-    //   return { ...state, product: payload, loading: false };
-
+    case GET_CART_ITEMS:
+      return {
+        ...state,
+        products: payload.carts.products,
+        subTotal: payload.carts.subTotal,
+        user: payload.carts.user,
+        loading:false,
+      };
     default:
       return state;
   }

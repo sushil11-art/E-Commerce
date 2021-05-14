@@ -1,13 +1,13 @@
 import React, { useEffect, useState, Fragment } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { Link,useHistory,withRouter } from "react-router-dom";
+import { Link, useHistory, withRouter } from "react-router-dom";
 import {
   categoryProducts,
   categoryProductsCheapest,
   categoryProductsExpensive,
   categoryProductsNew,
   categoryProductsOld,
-  categoryProductSearch
+  categoryProductSearch,
 } from "../../actions/products";
 import { AddToCart } from "../../actions/cart";
 
@@ -27,7 +27,7 @@ const Category = (props) => {
 
   useEffect(() => {
     dispatch(categoryProducts(categoryID));
-  }, [dispatch,categoryID]);
+  }, [dispatch, categoryID]);
 
   const { products, loading } = useSelector((state) => state.customerProduct);
 
@@ -54,15 +54,14 @@ const Category = (props) => {
     dispatch(categoryProductsOld(categoryID, 1));
   };
 
-  const token = useSelector(state => state.auth.token)
+  const token = useSelector((state) => state.auth.token);
   const browserHistory = useHistory();
-  function AddProduct(productID){
+  function AddProduct(productID) {
     // console.log(productID);
-    if(!token){
-        browserHistory.push("/login")
-
+    if (!token) {
+      browserHistory.push("/login");
     }
-    dispatch(AddToCart(productID,props.history));
+    dispatch(AddToCart(productID, props.history));
   }
   const renderProducts = products
     .slice(pageVisted, pageVisted + productsPerPage)
@@ -93,32 +92,57 @@ const Category = (props) => {
               </h2>
               <p className="mt-1">Nrs.{product.price}</p>
             </div>
-            <div style={{display:"flex",justifyContent:"center",alignItems:"center"}}>
-            <button type="button" onClick={()=>AddProduct(product._id)} className="btn btn-danger" style={{width:'60%'}}><i class="fas fa-2x fa-cart-plus" style={{color:'red'}}></i>&nbsp;&nbsp;Add To cart</button>
-            &nbsp;
-            <button type="button" className="btn btn-primary" style={{width:'40%'}}><i class="fas fa-2x fa-heart" style={{color:'orange'}}></i>&nbsp;&nbsp;Wishlist</button>
+            <div
+              style={{
+                display: "flex",
+                justifyContent: "center",
+                alignItems: "center",
+              }}
+            >
+              <button
+                type="button"
+                onClick={() => AddProduct(product._id)}
+                className="btn btn-danger"
+                style={{ width: "60%" }}
+              >
+                <i class="fas fa-2x fa-cart-plus" style={{ color: "red" }}></i>
+                &nbsp;&nbsp;Add To cart
+              </button>
+              &nbsp;
+              <button
+                type="button"
+                className="btn btn-primary"
+                style={{ width: "40%" }}
+              >
+                <i class="fas fa-2x fa-heart" style={{ color: "orange" }}></i>
+                &nbsp;&nbsp;Wishlist
+              </button>
             </div>
           </div>
         </Fragment>
       );
     });
 
-  const [formData,setFormData]=useState({
-    search:''
-  })
+  const [formData, setFormData] = useState({
+    search: "",
+  });
 
-  const onCategorySearchProduct = async(e) => setFormData({...formData,[e.target.name]:e.target.value})
-    
-  const {search}=formData;
+  const onCategorySearchProduct = async (e) =>
+    setFormData({ ...formData, [e.target.name]: e.target.value });
+
+  const { search } = formData;
   // console.log(search)
-  useEffect(()=>{
-    dispatch(categoryProductSearch(categoryID,search))
-  },[search,categoryID,dispatch])
+  useEffect(() => {
+    dispatch(categoryProductSearch(categoryID, search));
+  }, [search, categoryID, dispatch]);
 
-
+    const refresh = ()=>{
+      // it re-renders the component
+     window.location.reload();
+  }
+  
   return loading && !products.length > 0 ? (
     <Spinner />
-  
   ) : (
     <Fragment>
       <div className="product-container">
@@ -167,7 +191,7 @@ const Category = (props) => {
               </li>
             </ul>
           </div>
-           <form className="d-flex">
+          <form className="d-flex">
             <input
               className="form-control me-2"
               type="search"
@@ -179,13 +203,45 @@ const Category = (props) => {
             />
             {/* <button className="btn btn-outline-success" style={{borderRadius :'0px'}} type="submit">Search</button> */}
             {/* <button> */}
-              <i className="fas fa-3x fa-search"></i>
+            <i className="fas fa-3x fa-search"></i>
             {/* </button> */}
           </form>
         </div>
         <section class="text-gray-600 body-font">
           <div class="container px-5 py-24 mx-auto">
-            <div class="flex flex-wrap -m-4">{products.length >0 ? renderProducts : <><div class="no-product" ><Spinner /><h3>No products found,Please reload</h3></div></>}</div>
+            <div class="flex flex-wrap -m-4">
+              {products.length > 0 ? (
+                renderProducts
+              ) : (
+                <>
+                   <div class="no-product">
+                 <section className="flex items-center h-full p-16 bg-coolGray-50 text-coolGray-800">
+        <div className="container flex flex-col items-center justify-center px-5 mx-auto my-8">
+          <div className="max-w-md text-center">
+            <h2 className="mb-8 font-extrabold text-9xl text-coolGray-400">
+              <span className="sr-only">Error </span>404
+            </h2>
+            <p className="text-2xl font-semibold md:text-3xl text-coolGray-600">
+              Sorry, we couldn't find this page.
+            </p>
+            <p className="mt-4 mb-8">
+              But dont worry, you can find plenty of other things on our
+              products page
+            </p>
+            <button
+              onClick={refresh}
+              className="px-8 py-3 font-semibold rounded bg-violet-600 text-coolGray-50"
+            >
+            Reload
+            </button>
+          </div>
+        </div>
+      </section>
+      </div>
+                  
+                </>
+              )}
+            </div>
             <br />
             <br />
             <ReactPaginate

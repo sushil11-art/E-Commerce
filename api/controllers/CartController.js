@@ -4,7 +4,8 @@ const mongoose = require("mongoose");
 
 exports.addToCart = async (req, res, next) => {
   const productID = req.params.productID;
-  let cart = await Cart.find({ user: req.user.id }).deepPopulate("products._id.categoryID").exec();
+  // console.log(productID);
+  let cart = await Cart.find({ user: req.user.id });
   try {
     const product = await Product.findById(productID);
     if (!product) {
@@ -16,25 +17,32 @@ exports.addToCart = async (req, res, next) => {
       newCart.user = req.user.id;
       newCart.products.push({ _id: req.params.productID, quantity: 1,ownerID:product.ownerID });
       newCart.subTotal = product.price;
-      const carts = await newCart.save();
+      await newCart.save();
+      const carts = await Cart.findOne({ user: req.user.id }).deepPopulate("products._id.categoryID").exec();
       return res.json({ carts });
     }
-    const cartProductIndex = cart[0].products.findIndex((cp) => {
+    const cartProductIndex = await cart[0].products.findIndex((cp) => {
+      // console.log(cp);
       return cp._id.toString() == productID.toString();
     });
-    // console.log(cartProductIndex);
+    // console.log(cartProductIsndex);
     let quantity = 1;
     if (cartProductIndex >= 0) {
       cart[0].products[cartProductIndex].quantity =
         cart[0].products[cartProductIndex].quantity + 1;
       cart[0].subTotal = cart[0].subTotal + product.price;
-      const updatedCart = await cart[0].save();
-      return res.json({ updatedCart });
+      await cart[0].save();
+      const carts = await Cart.findOne({ user: req.user.id }).deepPopulate("products._id.categoryID").exec();
+      return res.json({carts });
     }
+    else{
     cart[0].products.push({ _id: req.params.productID, quantity: quantity,ownerID:product.ownerID});
     cart[0].subTotal = cart[0].subTotal + product.price;
-    const newCartItems = await cart[0].save();
-    return res.json({ newCartItems });
+    await cart[0].save();
+    const carts = await Cart.findOne({ user: req.user.id }).deepPopulate("products._id.categoryID").exec();
+    return res.json({ carts });
+    }
+  
   } catch (err) {
     if (err.kind === "ObjectId") {
       return res.status(404).json({ msg: "Product not found with that id" });
@@ -45,7 +53,7 @@ exports.addToCart = async (req, res, next) => {
 
 exports.removeFromCart = async (req, res, next) => {
   const productID = req.params.productID;
-  let cart = await Cart.find({ user: req.user.id }).deepPopulate("products._id.categoryID").exec();;
+  let cart = await Cart.find({ user: req.user.id });
   if (cart.length == 0) {
     return res.status(404).json({ msg: "User has not added anything to cart" });
   }
@@ -55,7 +63,7 @@ exports.removeFromCart = async (req, res, next) => {
     if (!product) {
       return res.status(404).json({ msg: "Product not found with that id" });
     }
-    const cartProductIndex = cart[0].products.findIndex((cp) => {
+    const cartProductIndex =await cart[0].products.findIndex((cp) => {
       return cp._id.toString() == productID.toString();
     });
     if (
@@ -66,13 +74,15 @@ exports.removeFromCart = async (req, res, next) => {
         cart[0].products[cartProductIndex].quantity - 1;
       cart[0].subTotal = cart[0].subTotal - product.price;
       // console.log(cart[0].products[cartProductIndex].quantity);
-      const updatedCart = await cart[0].save();
+      await cart[0].save();
       if (cart[0].products[cartProductIndex].quantity == 0) {
         cart[0].products.splice(cartProductIndex, 1);
-        const editedCart=await cart[0].save();
-        return res.json({ editedCart });
+        await cart[0].save();
+        const carts = await Cart.findOne({ user: req.user.id }).deepPopulate("products._id.categoryID").exec();
+        return res.json({carts});
       }
-      return res.json({ updatedCart });
+      const carts = await Cart.findOne({ user: req.user.id }).deepPopulate("products._id.categoryID").exec();
+      return res.json({ carts });
     }
     if(cartProductIndex < 0){
         cart[0].subTotal=0
@@ -91,8 +101,9 @@ exports.removeFromCart = async (req, res, next) => {
 
 exports.getCart=async(req,res,next)=>{
   try{
-     let cart = await Cart.find({ user: req.user.id }).deepPopulate("products._id.categoryID").exec();
-     return res.json({cart});
+     const carts = await Cart.findOne({ user: req.user.id }).deepPopulate("products._id.categoryID").exec();
+    //  console.log(cart);
+     return res.json({carts});
   }
   catch(err){
     return res.status(500).send("Server error");
