@@ -47,6 +47,7 @@ exports.placeOrder = async (req, res, next) => {
       zipCode,
       phoneNumber,
     } = req.body;
+    console.log(phoneNumber);
     const address = {};
     if (country) address.country = country;
     if (fullName) address.fullName = fullName;
@@ -84,12 +85,13 @@ exports.placeOrder = async (req, res, next) => {
     const body = `Thank You!For choosing hamro pasal ${fullName}
     Your order will be deliver soon
     Order Summary`;
+    const phone=`+${phoneNumber}`
     // `Thank you for choosing hamro pasal,Your order will be delivered soon`
     client.messages
       .create({
         body: body,
         from: process.env.TWILIO_PHONE_NUMBER,
-        to: phoneNumber,
+        to: phone,
       })
       .then((message) => console.log(message.sid))
       .catch((err) => {

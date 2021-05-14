@@ -1,24 +1,35 @@
-import React, { Fragment, useEffect } from "react";
+import React, { Fragment, useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 
 import { connect, useSelector, useDispatch } from "react-redux";
 import { logoutCustomer } from "../../actions/auth";
 import { getCategories } from "../../actions/category";
+// import Logout from "./LogoutModal";
 
-// import Carou from "./Landing";
-// import estore from "./estore.jpg"
+import { Button, Modal } from "react-bootstrap";
 
 const Navbar = ({ logoutCustomer }) => {
+
+  // ............logout from modal ./////////////
+  const [show, setShow] = useState(false);
+  const handleClose = () => setShow(false);
+  const handleShow = () => setShow(true);
+  const logout = () => {
+    dispatch(logoutCustomer);
+    handleClose();
+  };
+  
+
   const GuestLinks = (
     <Fragment>
       <li className="nav-item">
         <Link to="/login" className="nav-link">
-          <i className="fas fa-2x fa-user"></i>&nbsp;Sign In
+          <i className="fas fa-1x fa-user"></i>&nbsp;Sign In
         </Link>
       </li>
       <li className="nav-item">
         <Link to="/signup" className="nav-link">
-          <i className="fas fa-2x fa-user-plus"></i>&nbsp;Sign Up
+          <i className="fas fa-1x fa-user-plus"></i>&nbsp;Sign Up
         </Link>
       </li>
     </Fragment>
@@ -26,8 +37,8 @@ const Navbar = ({ logoutCustomer }) => {
 
   const AuthLinks = (
     <li className="nav-item">
-      <button onClick={logoutCustomer} className="nav-link">
-        <i className="fas fa-2x fa-sign-out-alt"></i>&nbsp;Sign Out
+      <button onClick={handleShow} className="nav-link">
+        <i className="fas fa-x fa-sign-out-alt"></i>&nbsp;Sign Out
       </button>
     </li>
   );
@@ -36,6 +47,8 @@ const Navbar = ({ logoutCustomer }) => {
   useEffect(() => {
     dispatch(getCategories());
   }, [dispatch]);
+
+
   // access token from redux store
   const token = useSelector((state) => state.auth.token);
   // redux
@@ -57,11 +70,36 @@ const Navbar = ({ logoutCustomer }) => {
 
   return (
     <Fragment>
+      {/* >..................MODAL START>>>>>>>>>>>>>>>>>>>>>>>>>>>>> */}
+      <Modal
+        show={show}
+        onHide={handleClose}
+        backdrop="static"
+        keyboard={false}
+      >
+        <Modal.Header closeButton>
+          <Modal.Title>Are you sure want to logout?</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          You wont able to access your cart,order summary and add product to
+          cart.
+        </Modal.Body>
+        <Modal.Footer>
+          <Button variant="success" onClick={logout}>
+            Logout
+          </Button>
+          <Button variant="primary" onClick={handleClose}>
+            Cancel
+          </Button>
+        </Modal.Footer>
+      </Modal>
+
+      {/* ..........................MODAL END>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> */}
       <nav className="navbar navbar-expand-lg navbar-dark bg-dark">
         <div className="container-fluid">
           <Link to="/" className="navbar-brand" style={{ fontStyle: "italic" }}>
             {/* <img src="" alt="" width="30" height="24" className="d-inline-block align-text-top" /> */}
-            <i className="fab fa-2x fa-shopify" style={{ color: "green" }}></i>
+            <i className="fab fa-1x fa-shopify" style={{ color: "green" }}></i>
             &nbsp;Hamro Pasal
           </Link>
           <button
@@ -79,14 +117,20 @@ const Navbar = ({ logoutCustomer }) => {
             <ul className="navbar-nav mr-auto">
               <li className="nav-item active">
                 <a className="nav-link">
-                  <i className="fas fa-2x fa-home" style={{ color: "red" }}></i>
+                  <i className="fas fa-1x fa-home" style={{ color: "red" }}></i>
                   &nbsp;Home<span className="sr-only">(current)</span>
-                </a>
+                </a>    
               </li>
               <Fragment>{token ? AuthLinks : GuestLinks}</Fragment>
             </ul>
 
             <ul className="navbar-nav mb-2 mb-lg-0 ml-auto ml-auto">
+              <li className="nav-item">
+                <Link to="/order" className="nav-link active">
+                  <i className="fab fa-first-order-alt"></i>
+                  &nbsp;Orders
+                </Link>
+              </li>
               <li className="nav-item dropdown">
                 <a
                   className="nav-link active dropdown-toggle"
@@ -96,7 +140,7 @@ const Navbar = ({ logoutCustomer }) => {
                   aria-expanded="false"
                 >
                   <i
-                    className="fab fa-2x fa-accessible-icon"
+                    className="fab fa-1x fa-accessible-icon"
                     style={{ color: "blue" }}
                   ></i>
                   &nbsp;Categories
@@ -115,13 +159,13 @@ const Navbar = ({ logoutCustomer }) => {
                   className="nav-link active"
                   aria-current="page"
                 >
-                  <i className="fab fa-2x fa-product-hunt"></i>&nbsp;Products
+                  <i className="fab fa-1x fa-product-hunt"></i>&nbsp;Products
                 </Link>
               </li>
               <li className="nav-item">
                 <Link to="/cart" className="nav-link active">
                   <i
-                    className="fas fa-2x fa-shopping-cart"
+                    className="fas fa-shopping-cart"
                     style={{ color: "purple" }}
                   ></i>
                   &nbsp;Cart

@@ -4,9 +4,12 @@ import { useHistory, Link } from "react-router-dom";
 import { AddToCart, FetchCartItems, RemoveFromCart } from "../../actions/cart";
 import ReactPaginate from "react-paginate";
 import { withRouter } from "react-router-dom";
+import CheckoutForm from "../checkout/CheckOutForm";
+
 // import "./cart.css";
 
 const Cart = (props) => {
+  // console.log(props.children);
   const token = useSelector((state) => state.auth.token);
   const browserHistory = useHistory();
   const dispatch = useDispatch();
@@ -47,6 +50,15 @@ const Cart = (props) => {
     dispatch(RemoveFromCart(productID, props.history));
   }
 
+  // open checkout form Modal....
+
+  const [show, setShow] = useState(false);
+  const handleClose = () => setShow(false);
+  const handleShow = () => setShow(true);
+
+  const openCheckoutForm=()=>{
+
+  }
 
   if (products.length > 0 && !loading) {
     const renderProducts = products
@@ -60,34 +72,34 @@ const Cart = (props) => {
         var source = "http://localhost:4000/uploads/" + url;
         return (
           <Fragment key={product._id._id}>
-            <div class="row border-top border-bottom">
-              <div class="row main align-items-center">
-                <div class="col-2">
-                  <img class="img-fluid" src={source} />
+            <div className="row border-top border-bottom">
+              <div className="row main align-items-center">
+                <div className="col-2">
+                  <img className="img-fluid" src={source} />
                 </div>
-                <div class="col">
-                  <div class="row text-muted">
+                <div className="col">
+                  <div className="row text-muted">
                     {product._id.categoryID.name}
                   </div>
-                  <div class="row">{product._id.title}</div>
+                  <div className="row">{product._id.title}</div>
                 </div>
-                <div class="col">
+                <div className="col">
                   {" "}
                   <Fragment>
                   <button onClick={() => RemoveProduct(product._id._id)}>-</button>{" "}&nbsp;&nbsp;
-                  <a href="#" class="border">
+                  <a href="#" className="border">
                     {product.quantity}
                   </a>&nbsp;&nbsp;
                   <button onClick={() => AddProduct(product._id._id)}>+</button>{" "}
                   </Fragment>
                 </div>
-                <div class="col">
+                <div className="col">
                   NRS.&nbsp;{product._id.price}
-                  <span class="close"></span>
+                  <span className="close"></span>
                 </div>
-                <div class="col">
+                <div className="col">
                   Total.&nbsp;{perProductTotal}
-                  <span class="close"></span>
+                  <span className="close"></span>
                 </div>
               </div>
             </div>
@@ -97,18 +109,19 @@ const Cart = (props) => {
 
     return (
       <Fragment>
+        <CheckoutForm show={show} setShow={setShow} handleClose={handleClose} handleShow={handleShow} />
         <br />
-        <div class="card">
-          <div class="row">
-            <div class="col-md-8 cart">
-              <div class="title">
-                <div class="row">
-                  <div class="col">
+        <div className="card">
+          <div className="row">
+            <div className="col-md-8 cart">
+              <div className="title">
+                <div className="row">
+                  <div className="col">
                     <h4>
                       <b>Shopping Cart</b>
                     </h4>
                   </div>
-                  <div class="col align-self-center text-right text-muted">
+                  <div className="col align-self-center text-right text-muted">
                     {products.length} items
                   </div>
                 </div>
@@ -138,45 +151,45 @@ const Cart = (props) => {
                 />
               </div>
 
-              <div class="back-to-shop">
-                <a href="#">
-                  <i class="fas fa-arrow-left"></i>
-                </a>
-                <span class="text-muted">Back to shop</span>
+              <div className="back-to-shop">
+                <Link to="/products">
+                  <i className="fas fa-arrow-left"></i>
+                </Link>
+                <span className="text-muted"><Link to="/products">Back to shop</Link></span>
               </div>
             </div>
-            <div class="col-md-4 summary">
+            <div className="col-md-4 summary">
               <div>
                 <h5>
                   <b>Summary</b>
                 </h5>
               </div>
               <hr />
-              <div class="row">
-                <div class="col" style={{ paddingLeft: "0" }}>
+              <div className="row">
+                <div className="col" style={{ paddingLeft: "0" }}>
                   ITEMS {products.length}
                 </div>
-                <div class="col text-right">NRS.{subTotal}</div>
+                <div className="col text-right">NRS.{subTotal}</div>
               </div>
               <br />
-              <div class="row">
-                <div class="col" style={{ paddingLeft: "0" }}>
+              <div className="row">
+                <div className="col" style={{ paddingLeft: "0" }}>
                   SHIPPING COST
                 </div>
-                <div class="col text-right">NRS.0</div>
+                <div className="col text-right">NRS.0</div>
               </div>
               <br />
-              <div class="row">
-                <div class="col" style={{ paddingLeft: "0" }}>
+              <div className="row">
+                <div className="col" style={{ paddingLeft: "0" }}>
                   TAX
                 </div>
-                <div class="col text-right">NRS.0</div>
+                <div className="col text-right">NRS.0</div>
               </div>
-              <div class="row price">
-                <div class="col">TOTAL PRICE</div>
-                <div class="col text-right">NRS.{subTotal}</div>
+              <div className="row price">
+                <div className="col">TOTAL PRICE</div>
+                <div className="col text-right">NRS.{subTotal}</div>
               </div>{" "}
-              <button class="btn">CHECKOUT</button>
+              <button onClick={handleShow} className="btn">CHECKOUT</button>
             </div>
           </div>
         </div>
@@ -186,15 +199,15 @@ const Cart = (props) => {
     return (
       <Fragment>
         <br />
-        <div class="container-fluid mt-100">
-          <div class="row">
-            <div class="col-md-12">
-              <div class="card">
-                <div class="card-header">
+        <div className="container-fluid mt-100">
+          <div className="row">
+            <div className="col-md-12">
+              <div className="card">
+                <div className="card-header">
                   <h5>Cart</h5>
                 </div>
-                <div class="card-body cart">
-                  <div class="col-sm-12 empty-cart-cls text-center">
+                <div className="card-body cart">
+                  <div className="col-sm-12 empty-cart-cls text-center">
                     {" "}
                     <img
                       style={{
@@ -205,7 +218,7 @@ const Cart = (props) => {
                       src="https://i.imgur.com/dCdflKN.png"
                       width="130"
                       height="130"
-                      class="img-fluid mb-4 mr-3"
+                      className="img-fluid mb-4 mr-3"
                     />
                     <h3>
                       <strong>Your Cart is Empty</strong>
@@ -213,7 +226,7 @@ const Cart = (props) => {
                     <h4>Add something to make me happy :)</h4>{" "}
                     <Link
                       to="/products"
-                      class="btn btn-primary cart-btn-transform m-3"
+                      className="btn btn-primary cart-btn-transform m-3"
                       data-abc="true"
                     >
                       Continue shopping
