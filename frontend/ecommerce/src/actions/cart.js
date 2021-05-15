@@ -10,7 +10,7 @@ export const AddToCart = (productID, history) => async (dispatch) => {
     const res = await axios.post(`/cart/addProduct/${productID}`, body, {
       headers: { "x-auth-token": token },
     });
-    console.log(res.data);
+    // console.log(res.data);
     // console.log(res.data.newCartItems.subTotal);
     dispatch({ type: ADD_TO_CART, payload: res.data });
     dispatch(setAlert("Product added to your cart", "success"));

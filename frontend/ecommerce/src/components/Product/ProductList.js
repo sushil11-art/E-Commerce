@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Fragment } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { Link ,useHistory,withRouter} from "react-router-dom";
+import { Link, useHistory, withRouter } from "react-router-dom";
 import {
   customerProducts,
   filterProductsCheapest,
@@ -20,7 +20,7 @@ import ReactPaginate from "react-paginate";
 import Spinner from "../layouts/Spinner";
 import { AddToCart } from "../../actions/cart";
 
-const ProductList = ({history}) => {
+const ProductList = ({ history }) => {
   //  const classNamees = useStyles();
 
   const [pageNumber, setPageNumber] = useState(0);
@@ -37,27 +37,26 @@ const ProductList = ({history}) => {
   }, [dispatch]);
 
   // filter productss....................
-  const cheapProducts = () => {
+  const cheapProducts = async() => {
     dispatch(filterProductsCheapest(1));
   };
-  const expensiveProducts = () => {
+  const expensiveProducts = async() => {
     dispatch(filterProductsExpensive(-1));
   };
-  const newProducts = () => {
+  const newProducts = async() => {
     dispatch(filterProductsNew(-1));
   };
-  const oldProducts = () => {
+  const oldProducts = async() => {
     dispatch(filterProductsOld(1));
   };
-   const token = useSelector(state => state.auth.token)
+  const token = useSelector((state) => state.auth.token);
   const browserHistory = useHistory();
-  function AddProduct(productID){
+  const AddProduct=async(productID) =>{
     // console.log(productID);
-    if(!token){
-        browserHistory.push("/login")
-
+    if (!token) {
+      browserHistory.push("/login");
     }
-    dispatch(AddToCart(productID,history));
+    dispatch(AddToCart(productID, history));
   }
   const renderProducts = products
     .slice(pageVisted, pageVisted + productsPerPage)
@@ -77,7 +76,6 @@ const ProductList = ({history}) => {
                 alt="ecommerce"
                 src={source}
                 className="object-cover object-center w-full h-full block"
-                
               />
             </Link>
             <div className="mt-4">
@@ -89,10 +87,31 @@ const ProductList = ({history}) => {
               </h2>
               <p className="mt-1">Nrs.{product.price}</p>
             </div>
-            <div style={{display:"flex",justifyContent:"center",alignItems:"center"}}>
-            <button onClick={()=>AddProduct(product._id)} type="button" className="btn btn-danger" style={{width:'60%'}}><i class="fas fa-2x fa-cart-plus" style={{color:'red'}}></i>&nbsp;&nbsp;Add To cart</button>
-            &nbsp;
-            <button type="button" className="btn btn-primary" style={{width:'40%'}}><i class="fas fa-2x fa-heart" style={{color:'orange'}}></i>&nbsp;&nbsp;Wishlist</button>
+            <div
+              style={{
+                display: "flex",
+                justifyContent: "center",
+                alignItems: "center",
+              }}
+            >
+              <button
+                onClick={() => AddProduct(product._id)}
+                type="button"
+                className="btn btn-danger"
+                style={{ width: "60%" }}
+              >
+                <i class="fas fa-2x fa-cart-plus" style={{ color: "red" }}></i>
+                &nbsp;&nbsp;Add To cart
+              </button>
+              &nbsp;
+              <button
+                type="button"
+                className="btn btn-primary"
+                style={{ width: "40%" }}
+              >
+                <i class="fas fa-2x fa-heart" style={{ color: "orange" }}></i>
+                &nbsp;&nbsp;Wishlist
+              </button>
             </div>
           </div>
         </Fragment>
@@ -118,13 +137,11 @@ const ProductList = ({history}) => {
     dispatch(searchProduct(search));
   }, [search, dispatch]);
 
-
   // Reload the page after no match products
-   const refresh = ()=>{
-      // it re-renders the component
-     window.location.reload();
-  }
-  
+  const refresh = () => {
+    // it re-renders the component
+    window.location.reload();
+  };
 
   return loading && !products.length > 0 ? (
     <Spinner />
@@ -176,7 +193,7 @@ const ProductList = ({history}) => {
               </li>
             </ul>
           </div>
-          <form className="d-flex" onSubmit={(e)=>e.preventDefault()}>
+          <form className="d-flex" onSubmit={(e) => e.preventDefault()}>
             <input
               className="form-control me-2"
               type="search"
@@ -199,31 +216,30 @@ const ProductList = ({history}) => {
                 renderProducts
               ) : (
                 <>
-                   <div class="no-product">
-                 <section className="flex items-center h-full p-16 bg-coolGray-50 text-coolGray-800">
-        <div className="container flex flex-col items-center justify-center px-5 mx-auto my-8">
-          <div className="max-w-md text-center">
-            <h2 className="mb-8 font-extrabold text-9xl text-coolGray-400">
-              <span className="sr-only">Error </span>404
-            </h2>
-            <p className="text-2xl font-semibold md:text-3xl text-coolGray-600">
-              Sorry, we couldn't find this page.
-            </p>
-            <p className="mt-4 mb-8">
-              But dont worry, you can find plenty of other things on our
-              products page
-            </p>
-            <button
-              onClick={refresh}
-              className="px-8 py-3 font-semibold rounded bg-violet-600 text-coolGray-50"
-            >
-            Reload
-            </button>
-          </div>
-        </div>
-      </section>
-      </div>
-                  
+                  <div class="no-product">
+                    <section className="flex items-center h-full p-16 bg-coolGray-50 text-coolGray-800">
+                      <div className="container flex flex-col items-center justify-center px-5 mx-auto my-8">
+                        <div className="max-w-md text-center">
+                          <h2 className="mb-8 font-extrabold text-9xl text-coolGray-400">
+                            <span className="sr-only">Error </span>404
+                          </h2>
+                          <p className="text-2xl font-semibold md:text-3xl text-coolGray-600">
+                            Sorry, we couldn't find this page.
+                          </p>
+                          <p className="mt-4 mb-8">
+                            But dont worry, you can find plenty of other things
+                            on our products page
+                          </p>
+                          <button
+                            onClick={refresh}
+                            className="px-8 py-3 font-semibold rounded bg-violet-600 text-coolGray-50"
+                          >
+                            Reload
+                          </button>
+                        </div>
+                      </div>
+                    </section>
+                  </div>
                 </>
               )}
             </div>

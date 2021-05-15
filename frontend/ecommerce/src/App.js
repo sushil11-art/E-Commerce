@@ -11,10 +11,11 @@ import SignIn from "./components/auth/SignIn";
 import SignUp from "./components/auth/SignUp";
 
 import Alert from "./components/layouts/Alert";
-import { useEffect } from "react";
+// import { useEffect } from "react";
 import ProductDetails from "./components/Product/ProductDetails";
 import setAuthToken from "./utils/setAuthToken";
 import Order from "./components/orders/Order";
+import OrderDetails from "./components/orders/OrderDetails";
 
 const App=() =>{  
   return (
@@ -31,6 +32,8 @@ const App=() =>{
           <Route exact path="/cart" component={Cart} />
           <Route exact path="/category/:categoryID" component={Category} />
           <Route exact path="/order" component={Order} />
+          <Route exact path="/order-details/:orderID" component={OrderDetails} />
+
           <Route exact path="/login" component={SignIn} />
           <Route exact path="/signup" component={SignUp} />
         </Switch>

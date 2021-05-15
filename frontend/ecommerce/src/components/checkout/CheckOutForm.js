@@ -29,10 +29,10 @@ const dispatch=useDispatch();
     phoneNumber,
   } = formData;
 
-  const onChange = (e) =>
+  const onChange =async (e) =>
     setFormData({ ...formData, [e.target.name]: e.target.value });
 
-    const proceedCheckout=()=>{
+    const proceedCheckout=async()=>{
         dispatch(placeOrder(formData))
         handleClose()
     }
@@ -71,9 +71,21 @@ const dispatch=useDispatch();
               <br />
               <small>
                   * Required field
-            <br />
+              <br />
                   * Phone Number required
               </small>
+              <br />
+              <PhoneInput
+                country={"us"}
+                value={phoneNumber}
+                inputProps={{
+                  name: "phoneNumber",
+                  required: true,
+                  autoFocus: true,
+                }}
+                onChange={(phoneNumber)=>setFormData({phoneNumber})}
+              />
+              <br />
               <input
                 type="text"
                 name="fullName"
@@ -105,7 +117,7 @@ const dispatch=useDispatch();
                   className="border rounded h-10 w-full focus:outline-none focus:border-green-200 px-2 mt-2 text-sm"
                   placeholder="Zipcode (optional)"
                   value={zipCode}
-                  onChange={(e) => onChange(e)}
+                onChange={(e) => onChange(e)}
                 />
                 <input
                   type="text"
@@ -113,7 +125,7 @@ const dispatch=useDispatch();
                   className="border rounded h-10 w-full focus:outline-none focus:border-green-200 px-2 mt-2 text-sm"
                   placeholder="City (optional)"
                   value={city}
-                  onChange={(e) => onChange(e)}
+                onChange={(e) => onChange(e)}
                 />{" "}
                 <input
                   type="text"
@@ -121,19 +133,10 @@ const dispatch=useDispatch();
                   className="border rounded h-10 w-full focus:outline-none focus:border-green-200 px-2 mt-2 text-sm"
                   placeholder="State(optional)"
                   value={state}
-                  onChange={(e) => onChange(e)}
+                onChange={(e) => onChange(e)}
                 />{" "}
               </div>{" "}
-              <PhoneInput
-                country={"us"}
-                value={phoneNumber}
-                inputProps={{
-                  name: "phone",
-                  required: true,
-                  autoFocus: true,
-                }}
-                onChange={(phoneNumber) => setFormData({ phoneNumber })}
-              />
+              
               <div className="flex justify-between items-center pt-2">
                 {" "}
                 <button

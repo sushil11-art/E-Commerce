@@ -18,7 +18,7 @@ const ProductDetails = (props) => {
   // console.log(product);
   const token = useSelector((state) => state.auth.token);
   const browserHistory = useHistory();
-  function AddProduct(productID) {
+  const AddProduct=(productID)=> {
     // console.log(productID);
     if (!token) {
       browserHistory.push("/login");

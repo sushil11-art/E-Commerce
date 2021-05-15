@@ -35,14 +35,15 @@ const Cart = (props) => {
   };
   // pagination renderProducts
   // Add product to your cart
-  const AddProduct=(productID) =>{
+  const AddProduct=async(productID) =>{
     // console.log(productID);
     if (!token) {
       browserHistory.push("/login");
     }
     dispatch(AddToCart(productID, props.history));
+    // window.location.reload();
   }
-  const RemoveProduct=(productID) =>{
+  const RemoveProduct=async(productID) =>{
     // console.log(productID);
     if (!token) {
       browserHistory.push("/login");

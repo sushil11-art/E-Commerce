@@ -41,22 +41,22 @@ const Category = (props) => {
     setPageNumber(selected);
   };
 
-  const cheapProducts = () => {
+  const cheapProducts = async() => {
     dispatch(categoryProductsCheapest(categoryID, 1));
   };
-  const expensiveProducts = () => {
+  const expensiveProducts = async() => {
     dispatch(categoryProductsExpensive(categoryID, -1));
   };
-  const newProducts = () => {
+  const newProducts = async() => {
     dispatch(categoryProductsNew(categoryID, -1));
   };
-  const oldProducts = () => {
+  const oldProducts = async() => {
     dispatch(categoryProductsOld(categoryID, 1));
   };
 
   const token = useSelector((state) => state.auth.token);
   const browserHistory = useHistory();
-  function AddProduct(productID) {
+  const AddProduct=async(productID)=>{
     // console.log(productID);
     if (!token) {
       browserHistory.push("/login");
@@ -136,11 +136,11 @@ const Category = (props) => {
     dispatch(categoryProductSearch(categoryID, search));
   }, [search, categoryID, dispatch]);
 
-    const refresh = ()=>{
-      // it re-renders the component
-     window.location.reload();
-  }
-  
+  const refresh = () => {
+    // it re-renders the component
+    window.location.reload();
+  };
+
   return loading && !products.length > 0 ? (
     <Spinner />
   ) : (
@@ -214,31 +214,30 @@ const Category = (props) => {
                 renderProducts
               ) : (
                 <>
-                   <div class="no-product">
-                 <section className="flex items-center h-full p-16 bg-coolGray-50 text-coolGray-800">
-        <div className="container flex flex-col items-center justify-center px-5 mx-auto my-8">
-          <div className="max-w-md text-center">
-            <h2 className="mb-8 font-extrabold text-9xl text-coolGray-400">
-              <span className="sr-only">Error </span>404
-            </h2>
-            <p className="text-2xl font-semibold md:text-3xl text-coolGray-600">
-              Sorry, we couldn't find this page.
-            </p>
-            <p className="mt-4 mb-8">
-              But dont worry, you can find plenty of other things on our
-              products page
-            </p>
-            <button
-              onClick={refresh}
-              className="px-8 py-3 font-semibold rounded bg-violet-600 text-coolGray-50"
-            >
-            Reload
-            </button>
-          </div>
-        </div>
-      </section>
-      </div>
-                  
+                  <div class="no-product">
+                    <section className="flex items-center h-full p-16 bg-coolGray-50 text-coolGray-800">
+                      <div className="container flex flex-col items-center justify-center px-5 mx-auto my-8">
+                        <div className="max-w-md text-center">
+                          <h2 className="mb-8 font-extrabold text-9xl text-coolGray-400">
+                            <span className="sr-only">Error </span>404
+                          </h2>
+                          <p className="text-2xl font-semibold md:text-3xl text-coolGray-600">
+                            Sorry, we couldn't find this page.
+                          </p>
+                          <p className="mt-4 mb-8">
+                            But dont worry, you can find plenty of other things
+                            on our products page
+                          </p>
+                          <button
+                            onClick={refresh}
+                            className="px-8 py-3 font-semibold rounded bg-violet-600 text-coolGray-50"
+                          >
+                            Reload
+                          </button>
+                        </div>
+                      </div>
+                    </section>
+                  </div>
                 </>
               )}
             </div>
