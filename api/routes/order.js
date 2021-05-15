@@ -4,6 +4,7 @@ const {
   placeOrder,
   getMyOrders,
   cancelOrder,
+  OrderPlaceById,
   orderDetails,
   orderDetailsSuperAdmin,
   changeDeliveryStatusSuperAdmin,
@@ -36,6 +37,10 @@ router.get("/getMyOrders", [auth], getMyOrders);
 
 // cancel order by customer
 router.post("/cancel-order/:orderID", [auth], cancelOrder);
+
+
+router.post("/place-order/:orderID", [auth],OrderPlaceById);
+
 
 // get order details by customer
 

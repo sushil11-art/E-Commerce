@@ -124,7 +124,7 @@ exports.getMyOrders = async (req, res, next) => {
 exports.cancelOrder = async (req, res, next) => {
   try {
     const orderID = req.params.orderID;
-    const order = await Order.findById(orderID);
+    const order = await Order.findById(orderID).deepPopulate(["products.product.categoryID"]).exec();
     if (!order) {
       return res.status(404).json({ msg: "Order not found with that id" });
     }
@@ -142,11 +142,33 @@ exports.cancelOrder = async (req, res, next) => {
   }
 };
 
+exports.OrderPlaceById = async (req, res, next) => {
+  try {
+    const orderID = req.params.orderID;
+    const order = await Order.findById(orderID).deepPopulate(["products.product.categoryID"]).exec();
+    if (!order) {
+      return res.status(404).json({ msg: "Order not found with that id" });
+    }
+    if (order.user.toString() !== req.user.id) {
+      return res.status(404).json({ msg: "This order is not placed by you" });
+    }
+    order.orderStatus = "Placed";
+    await order.save();
+    res.json({ order });
+  } catch (err) {
+    if (err.kind === "ObjectId") {
+      return res.status(404).json({ msg: "Order not found with that id" });
+    }
+    return res.status(500).send("Server error");
+  }
+};
+
+
 // get order details by user who placed order
 exports.orderDetails = async (req, res, next) => {
   try {
     const orderID = req.params.orderID;
-    const order = await Order.findById(orderID);
+    const order = await Order.findById(orderID).deepPopulate(["products.product.categoryID"]).exec();
     if (!order) {
       return res.status(404).json({ msg: "Order not found with that id" });
     }
