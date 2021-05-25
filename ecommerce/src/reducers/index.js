@@ -8,5 +8,6 @@ import cart from "./cart";
 import order from "./order";
 import adminCategory from "./adminCategory";
 
+import adminProduct from "./adminProduct";
 
-export default combineReducers({ alert, auth, customerProduct, category ,cart,order,adminCategory});
+export default combineReducers({ alert, auth, customerProduct, category ,cart,order,adminCategory,adminProduct});

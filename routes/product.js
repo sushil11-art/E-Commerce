@@ -32,13 +32,13 @@ router.post(
   [
     auth,
     [
-      body("title", "Name is required").not().isEmpty(),
+      body("title", "Title is required").not().isEmpty(),
       body("description", "Description is required").not().isEmpty(),
-      body("price", "Must be an integer or floating number")
-        .trim()
-        .toFloat()
-        .isFloat(),
-      body("stockQuantity", "Must be an integer value").trim().isInt(),
+      // body("price", "Must be an integer or floating number")
+      //   .trim()
+      //   .toFloat()
+      //   .isFloat(),
+      // body("stockQuantity", "Must be an integer value").trim().isInt(),
     ],
   ],
   addProduct
@@ -67,7 +67,7 @@ router.delete("/delete-product/:productID", [auth], deleteProduct);
 
 // get all products by respective owner
 
-router.get("/all-products", [auth], getProducts);
+router.get("/all-products",getProducts);
 
 // get product with id
 

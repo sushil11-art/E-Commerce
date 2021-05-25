@@ -1,6 +1,7 @@
 import React, { useEffect, useState, Fragment } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Link, useHistory, withRouter } from "react-router-dom";
+import {Container,Button,Spinner} from "react-bootstrap";
 import {
   categoryProducts,
   categoryProductsCheapest,
@@ -17,7 +18,7 @@ import { AddToCart } from "../../actions/cart";
 import "./CategoryPagination.css";
 
 import ReactPaginate from "react-paginate";
-import Spinner from "../layouts/Spinner";
+// import Spinner from "../layouts/Spinner";
 
 const Category = (props) => {
   // console.log(props.match.params.categoryID);
@@ -214,7 +215,7 @@ const Category = (props) => {
                 renderProducts
               ) : (
                 <>
-                  <div class="no-product">
+                   <div class="no-product">
                     <section className="flex items-center h-full p-16 bg-coolGray-50 text-coolGray-800">
                       <div className="container flex flex-col items-center justify-center px-5 mx-auto my-8">
                         <div className="max-w-md text-center">
@@ -222,7 +223,7 @@ const Category = (props) => {
                             <span className="sr-only">Error </span>404
                           </h2>
                           <p className="text-2xl font-semibold md:text-3xl text-coolGray-600">
-                            Sorry, we couldn't find this page.
+                            Sorry,products not founds of that category.
                           </p>
                           <p className="mt-4 mb-8">
                             But dont worry, you can find plenty of other things

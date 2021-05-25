@@ -1,6 +1,7 @@
 const {validationResult}=require("express-validator");
 
 const Product = require("../models/Product");
+var mongoose = require('mongoose');
 
 // add product by admin
 exports.addProduct=async(req,res,next)=>{
@@ -15,8 +16,10 @@ exports.addProduct=async(req,res,next)=>{
     const photoURL=selectedFile.path;
     try{
         const categoryID=req.params.categoryID
-    const newProduct=new Product({
-        categoryID:categoryID,
+        console.log(categoryID);
+        // console.log(req.body);
+        const newProduct=new Product({
+        categoryID:mongoose.Types.ObjectId(categoryID),
         ownerID:req.user.id,
         title:req.body.title,
         description:req.body.description,
@@ -102,7 +105,8 @@ exports.deleteProduct=async(req,res,next)=>{
 exports.getProducts=async(req,res,next)=>{
     // console.log(req.user.id);
   try{
-    const products=await Product.find({ownerID:req.user.id});
+    const products=await Product.find().populate('categoryID');
+    // const products=await Product.find({ownerID:req.user.id});
     // console.log(products);
     res.json({products});
   }
@@ -110,6 +114,8 @@ exports.getProducts=async(req,res,next)=>{
     return res.status(500).send("Server error");
   }
 }
+
+
 
 // get product with id by owner
 exports.getMyProduct=async(req,res,next)=>{

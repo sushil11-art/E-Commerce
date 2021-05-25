@@ -9,7 +9,7 @@ import {useDispatch, useSelector} from "react-redux";
 import { adminCategories } from "../../actions/adminAction";
 
 const Dashboard=()=>{
-const [key, setKey] = useState('home');
+const [key, setKey] = useState('products');
   const dispatch=useDispatch();
   useEffect(()=>{
     dispatch(adminCategories())
@@ -23,20 +23,21 @@ const [key, setKey] = useState('home');
   <Row>
     <Alert variant="danger">
          <Alert.Heading style={{textAlign:"center"}}>
-            WELCOME ADMIN
+           <i class="fas fa-door-open"></i> WELCOME ADMIN <i class="fas fa-1x fa-user-shield"></i>
         </Alert.Heading>
         <Row >
-          <Col sm={9}>
+          <Col sm={12}>
               <Tabs
       id="controlled-tab-example"
       activeKey={key}
       onSelect={(k) => setKey(k)}>
-      <Tab eventKey="home" title="Category">
-        <Category categories={categories} loading={loading}/>
-      </Tab>
-      <Tab eventKey="profile" title="Profile">
+        <Tab eventKey="products" title="Products">
       <AdminProducts />
       </Tab>
+      <Tab eventKey="category" title="Category">
+        <Category categories={categories} loading={loading}/>
+      </Tab>
+      
       <Tab eventKey="contact" title="Contact">
         Contact Me
       </Tab>

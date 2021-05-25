@@ -53,9 +53,18 @@ const app = express();
 
 // const passportConfig = require('./config/passport-setup')(passport);
 
+// const fileStorage = multer.diskStorage({
+//   destination: (req, file, cb) => {
+//     cb(null, path.join(__dirname, "/uploads"));
+//   },
+//   filename: (req, file, cb) => {
+//     cb(null, Date.now() + file.originalname);
+//   },
+// });
+
 const fileStorage = multer.diskStorage({
   destination: (req, file, cb) => {
-    cb(null, path.join(__dirname, "/uploads"));
+    cb(null, "uploads");
   },
   filename: (req, file, cb) => {
     cb(null, Date.now() + file.originalname);
@@ -75,7 +84,13 @@ const fileFilter = (req, file, cb) => {
 };
 
 app.use(cors());
+app.use((req,res,next)=>{
+	res.setHeader('Access-Control-Allow-Origin','*');
+	res.setHeader('Access-Control-Allow-Methods','GET,PUT,PATCH,DELETE,POST');
+	res.setHeader('Access-Control-Allow-Headers','Content-Type,Authorization');
+	next();
 
+});
 // body parser
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
