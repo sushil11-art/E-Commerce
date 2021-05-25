@@ -63,7 +63,7 @@ const Category = ({categories,loading}) => {
         handleClose={handleClose}
         handleShow={handleShow}/> */}
       <Alert.Heading style={{ width: "20%"}}>
-        <Button variant="danger"  onClick={handleShow} >Add Category</Button>
+        <Button variant="danger"  onClick={handleShow} ><i class="fas fa-plus-circle">&nbsp;&nbsp;Add Category</i></Button>
       </Alert.Heading>
       <Table striped bordered hover variant="warning">
         <thead>

@@ -35,7 +35,6 @@ const [key, setKey] = useState('home');
         <Category categories={categories} loading={loading}/>
       </Tab>
       <Tab eventKey="profile" title="Profile">
-        <br />
       <AdminProducts />
       </Tab>
       <Tab eventKey="contact" title="Contact">
