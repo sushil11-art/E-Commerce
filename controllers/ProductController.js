@@ -16,7 +16,7 @@ exports.addProduct=async(req,res,next)=>{
     const photoURL=selectedFile.path;
     try{
         const categoryID=req.params.categoryID
-        console.log(categoryID);
+        // console.log(categoryID);
         // console.log(req.body);
         const newProduct=new Product({
         categoryID:mongoose.Types.ObjectId(categoryID),

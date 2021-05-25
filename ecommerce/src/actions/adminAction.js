@@ -38,7 +38,7 @@ export const AddCategory = (formData) => async (dispatch) => {
   }
 };
 
-export const editCategory = (formData,id) => async (dispatch) => {
+export const editCategory = (formData, id) => async (dispatch) => {
   // console.log(token);
   try {
     const token = localStorage.getItem("token");
@@ -76,12 +76,12 @@ export const deletCategory = (id) => async (dispatch) => {
     // const res = await axios.post('/category/add-category', formData, {
     //   headers: { "x-auth-token": token },
     // });
-    const res = await axios.delete(`/category/delete-category/${id}`,{
+    const res = await axios.delete(`/category/delete-category/${id}`, {
       headers: {
         "x-auth-token": token,
         // "Content-Type": "Application/json",
       },
-    },body);
+    }, body);
     // console.log(res.data);
     dispatch({ type: DELETE_CATEGORY, payload: res.data });
     dispatch(setAlert("Category deleted successfully", "success"));
@@ -97,16 +97,16 @@ export const deletCategory = (id) => async (dispatch) => {
 };
 
 
-export const getCategory=(id)=>async (dispatch)=>{
-  try{
-     const token = localStorage.getItem("token");
+export const getCategory = (id) => async (dispatch) => {
+  try {
+    const token = localStorage.getItem("token");
     const res = await axios.get(`/category/get-category/${id}`, {
       headers: { "x-auth-token": token },
     });
     // console.log(res.data);;
-    dispatch({type:GET_CATEGORY,payload:res.data})
+    dispatch({ type: GET_CATEGORY, payload: res.data })
   }
-  catch(err){
+  catch (err) {
     console.log(err);
   }
 }
@@ -137,13 +137,13 @@ export const adminProducts = () => async (dispatch) => {
   }
 };
 
-export const AddProduct = (formData,categoryID) => async (dispatch) => {
+export const AddProduct = (formData, categoryID) => async (dispatch) => {
   // console.log(categoryID);
   try {
     const token = localStorage.getItem("token");
     const body = formData;
-    console.log(body);
-    const res = await axios.post(`/product/add-product/${categoryID}`,body, {
+    // console.log(body);
+    const res = await axios.post(`/product/add-product/${categoryID}`, body, {
       headers: {
         // "Content-Type":"multipart/form-data",
         "x-auth-token": token,
