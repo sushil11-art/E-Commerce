@@ -62,7 +62,7 @@ const Category = ({categories,loading}) => {
         setShow={setShow}
         handleClose={handleClose}
         handleShow={handleShow}/> */}
-      <Alert.Heading style={{ width: "20%" }}>
+      <Alert.Heading style={{ width: "20%"}}>
         <Button variant="danger"  onClick={handleShow} >Add Category</Button>
       </Alert.Heading>
       <Table striped bordered hover variant="warning">
