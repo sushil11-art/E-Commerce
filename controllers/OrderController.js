@@ -47,7 +47,7 @@ exports.placeOrder = async (req, res, next) => {
       zipCode,
       phoneNumber,
     } = req.body;
-    console.log(phoneNumber);
+    // console.log(phoneNumber);
     const address = {};
     if (country) address.country = country;
     if (fullName) address.fullName = fullName;
@@ -111,7 +111,7 @@ exports.placeOrder = async (req, res, next) => {
 // get all orders placed by user
 exports.getMyOrders = async (req, res, next) => {
   try {
-    const orders = await Order.find({ user: req.user.id });
+    const orders = await Order.find({ user: req.user.id }).sort({date:1});
     // console.log(products);
     res.json({ orders });
   } catch (err) {

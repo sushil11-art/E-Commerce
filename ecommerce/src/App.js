@@ -13,9 +13,12 @@ import SignUp from "./components/auth/SignUp";
 import Alert from "./components/layouts/Alert";
 // import { useEffect } from "react";
 import ProductDetails from "./components/Product/ProductDetails";
-import setAuthToken from "./utils/setAuthToken";
+// import setAuthToken from "./utils/setAuthToken";
 import Order from "./components/orders/Order";
 import OrderDetails from "./components/orders/OrderDetails";
+import Dashboard from "./components/admin/Dashboard";
+// import AdminProduct from "./components/admin/AdminProduct";
+
 
 const App=() =>{  
   return (
@@ -36,6 +39,7 @@ const App=() =>{
 
           <Route exact path="/login" component={SignIn} />
           <Route exact path="/signup" component={SignUp} />
+          <Route exact path="/dashboard" component={Dashboard}/>
         </Switch>
       </Fragment>
     </Router>

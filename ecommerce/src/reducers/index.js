@@ -6,7 +6,7 @@ import category from "./category";
 import customerProduct from "./customerProduct";
 import cart from "./cart";
 import order from "./order";
+import adminCategory from "./adminCategory";
 
 
-
-export default combineReducers({ alert, auth, customerProduct, category ,cart,order});
+export default combineReducers({ alert, auth, customerProduct, category ,cart,order,adminCategory});

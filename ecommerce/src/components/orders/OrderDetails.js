@@ -10,7 +10,7 @@ import {
 } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
 import { useHistory, withRouter } from "react-router-dom";
-import { orderDetails, cancelOrder, placeOrderByID, placeOrder } from "../../actions/order";
+import { orderDetails, cancelOrder, placeOrderByID } from "../../actions/order";
 
 const OrderDetails = (props) => {
   const token = useSelector((state) => state.auth.token);
@@ -50,7 +50,7 @@ const OrderDetails = (props) => {
           <div className="row border-top border-bottom">
             <div className="row main align-items-center">
               <div className="col-2">
-                <img className="img-fluid" src={source} />
+                <img className="img-fluid" src={source} alt="" />
               </div>
               <div className="col">
                 <div className="row text-muted">
@@ -123,7 +123,7 @@ const OrderDetails = (props) => {
                 </ListGroup>
               </p>
               <br />
-              {order.deliveryStatus == "Delivered" ? (
+              {order.deliveryStatus === "Delivered" ? (
                 <Alert variant="success">
                   DELIVERY STATUS:&nbsp;{order.deliveryStatus}
                 </Alert>
@@ -142,14 +142,14 @@ const OrderDetails = (props) => {
                 </ListGroup>
               </p>
               <br />
-              {order.paidStatus == false ? (
+              {order.paidStatus === false ? (
                 <Alert variant="danger">PAID STATUS:&nbsp;UNPAID</Alert>
               ) : (
                 <Alert variant="success">PAID STATUS: &nbsp;PAID</Alert>
               )}{" "}
               <hr />
               <Alert.Heading>ORDER ITEMS</Alert.Heading>
-              {order.orderStatus == "Placed" ? (
+              {order.orderStatus === "Placed" ? (
                 <Alert variant="success">
                   ORDER STATUS:&nbsp;{order.orderStatus}
                 </Alert>
@@ -198,7 +198,7 @@ const OrderDetails = (props) => {
                 </ListGroup.Item>
               </ListGroup>
               <hr />
-              {order.orderStatus == "Cancelled" ? (
+              {order.orderStatus === "Cancelled" ? (
                 <Button
                   variant="btn btn-danger"
                   onClick={() => PlaceOrder(order._id)}

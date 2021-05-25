@@ -14,7 +14,7 @@ const Order = () => {
       browserHistory.push("/login");
     }
     dispatch(getMyOrders());
-  }, [dispatch, getMyOrders, token, browserHistory]);
+  }, [dispatch,token, browserHistory]);
   const { orders, loading } = useSelector((state) => state.order);
 
   // pagination to orders
@@ -37,7 +37,7 @@ const Order = () => {
             <td>{order._id}</td>
             <td>{order.deliveryStatus}</td>
             <td>
-              {order.paidStatus == false ? (
+              {order.paidStatus === false ? (
                 <button class="btn btn-danger">
                   <i class="fas fa-money-bill-wave"></i>&nbsp;Unpaid
                 </button>

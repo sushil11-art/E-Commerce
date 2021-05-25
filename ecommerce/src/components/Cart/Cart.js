@@ -18,8 +18,7 @@ const Cart = (props) => {
       browserHistory.push("/login");
     }
     dispatch(FetchCartItems());
-  }, [token, browserHistory, FetchCartItems, dispatch]);
-
+  }, [token, browserHistory, dispatch]);
 
   const { products, subTotal, loading } = useSelector((state) => state.cart);
   // console.log(products);
@@ -35,31 +34,27 @@ const Cart = (props) => {
   };
   // pagination renderProducts
   // Add product to your cart
-  const AddProduct=async(productID) =>{
+  const AddProduct = async (productID) => {
     // console.log(productID);
     if (!token) {
       browserHistory.push("/login");
     }
     dispatch(AddToCart(productID, props.history));
     // window.location.reload();
-  }
-  const RemoveProduct=async(productID) =>{
+  };
+  const RemoveProduct = async (productID) => {
     // console.log(productID);
     if (!token) {
       browserHistory.push("/login");
     }
     dispatch(RemoveFromCart(productID, props.history));
-  }
+  };
 
   // open checkout form Modal....
 
   const [show, setShow] = useState(false);
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
-
-  const openCheckoutForm=()=>{
-
-  }
 
   if (products.length > 0 && !loading) {
     const renderProducts = products
@@ -76,22 +71,28 @@ const Cart = (props) => {
             <div className="row border-top border-bottom">
               <div className="row main align-items-center">
                 <div className="col-2">
-                  <img className="img-fluid" src={source} />
+                  <img className="img-fluid" src={source} alt="" />
                 </div>
                 <div className="col">
-                  <div className="row text-muted">
-                    {product._id.categoryID.name}
-                  </div>
+                  {product._id.categoryID.name != null ? (
+                    <div className="row text-muted">
+                      {product._id.categoryID.name}
+                    </div>
+                  ) : null}
+
                   <div className="row">{product._id.title}</div>
                 </div>
                 <div className="col">
                   {" "}
                   <Fragment>
-                  <button onClick={() => RemoveProduct(product._id._id)}>-</button>{" "}&nbsp;&nbsp;
-                  <a href="#" className="border">
-                    {product.quantity}
-                  </a>&nbsp;&nbsp;
-                  <button onClick={() => AddProduct(product._id._id)}>+</button>{" "}
+                    <button onClick={() => RemoveProduct(product._id._id)}>
+                      -
+                    </button>{" "}
+                    &nbsp;&nbsp;
+                    <a className="border">{product.quantity}</a>&nbsp;&nbsp;
+                    <button onClick={() => AddProduct(product._id._id)}>
+                      +
+                    </button>{" "}
                   </Fragment>
                 </div>
                 <div className="col">
@@ -110,7 +111,12 @@ const Cart = (props) => {
 
     return (
       <Fragment>
-        <CheckoutForm show={show} setShow={setShow} handleClose={handleClose} handleShow={handleShow} />
+        <CheckoutForm
+          show={show}
+          setShow={setShow}
+          handleClose={handleClose}
+          handleShow={handleShow}
+        />
         <br />
         <div className="card">
           <div className="row">
@@ -156,7 +162,9 @@ const Cart = (props) => {
                 <Link to="/products">
                   <i className="fas fa-arrow-left"></i>
                 </Link>
-                <span className="text-muted"><Link to="/products">Back to shop</Link></span>
+                <span className="text-muted">
+                  <Link to="/products">Back to shop</Link>
+                </span>
               </div>
             </div>
             <div className="col-md-4 summary">
@@ -190,7 +198,9 @@ const Cart = (props) => {
                 <div className="col">TOTAL PRICE</div>
                 <div className="col text-right">NRS.{subTotal}</div>
               </div>{" "}
-              <button onClick={handleShow} className="btn">CHECKOUT</button>
+              <button onClick={handleShow} className="btn">
+                CHECKOUT
+              </button>
             </div>
           </div>
         </div>
@@ -220,6 +230,7 @@ const Cart = (props) => {
                       width="130"
                       height="130"
                       className="img-fluid mb-4 mr-3"
+                      alt=""
                     />
                     <h3>
                       <strong>Your Cart is Empty</strong>

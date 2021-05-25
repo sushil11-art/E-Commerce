@@ -30,6 +30,20 @@ export const GET_ORDERS="GET_ORDERS";
 export const GET_ORDER="GET_ORDER";
 
 
+// ................ADMIN>>>>>> ACTION>>>>>>
+
+
+export const ADD_CATEGORY="ADD_CATEGORY";
+
+export const DELETE_CATEGORY="DELETE_CATEGORY";
+
+export const EDIT_CATEGORY="EDIT_CATEGORY";
+
+export const GET_CATEGORIES="GET_CATEGORIES";
+export const GET_CATEGORY="GET_CATEGORY";
+
+
+
 // export const CHEAP_PRODUCTS="CHEAP_PRODUCTS"
 // export const EXPENSIVE_PRODUCTS="EXPENSIVE_PRODUCTS"
 // export const NEW_PRODUCTS="EXPENSIVE_PRODUCTS"

@@ -8,3 +8,11 @@ export const setAlert = (msg, alerType, timeout = 5000) => (dispatch) => {
     dispatch({ type: REMOVE_ALERT, payload: id });
   }, timeout);
 };
+
+// export const adminAlert=(msg,alerType,timeout=5000)=>(dispatch)=>{
+//   const id = uuid();
+//   dispatch({ type: SET_ALERT, payload: { msg, alerType, id } });
+//   setTimeout(() => {
+//     dispatch({ type: REMOVE_ALERT, payload: id });
+//   }, timeout);
+// }

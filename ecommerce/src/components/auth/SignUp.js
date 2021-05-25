@@ -1,5 +1,5 @@
 import React, {useState, useEffect } from "react";
-import { Link,withRouter, useHistory } from "react-router-dom";
+import { Link,withRouter} from "react-router-dom";
 import { connect, useSelector} from "react-redux";
 // import alert from "../../reducers/alert";
 import { setAlert } from "../../actions/alert";

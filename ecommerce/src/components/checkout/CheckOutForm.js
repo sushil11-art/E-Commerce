@@ -1,6 +1,6 @@
 import React, { Fragment, useState } from "react";
-import { Button, Modal } from "react-bootstrap";
-import Cart from "../Cart/Cart";
+import {  Modal } from "react-bootstrap";
+// import Cart from "../Cart/Cart";
 
 
 

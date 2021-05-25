@@ -162,6 +162,15 @@ const Navbar = ({ logoutCustomer }) => {
                   <i className="fab fa-1x fa-product-hunt"></i>&nbsp;Products
                 </Link>
               </li>
+                <li className="nav-item">
+                <Link
+                  to="/dashboard"
+                  className="nav-link active"
+                  aria-current="page"
+                >
+                  <i className="fab fa-1x fa-product-hunt"></i>&nbsp;Dashboard
+                </Link>
+              </li>
               <li className="nav-item">
                 <Link to="/cart" className="nav-link active">
                   <i

@@ -9,13 +9,18 @@ exports.addCategory = async (req, res, next) => {
     return res.status(400).json({ errors: errors.array() });
   }
   try{
-    // console.log(req.body.name);
+      // const category=await Category.find({name:req.body.name})
+      // if(category){
+      //     return res.status(404).json({ errors: [{ msg: " Category already exists" }] });
+      // }
       const newCategory=new Category({
           name:req.body.name,
           user:req.user.id
       })
-      const category= await newCategory.save();
-      return res.json({ category});
+      // console.log(newCategory);
+      await newCategory.save();
+      // console.log(category);
+      return res.json({ category:newCategory});
   }
   catch(err){
     return res.status(500).send("Server error");
@@ -48,7 +53,7 @@ exports.editCategory=async(req,res,next)=>{
       category.name=name;
       category.user=req.user.id;
       const editCategory=await category.save();
-      return res.json({editCategory});
+      return res.json({category:editCategory});
     }
     catch(err){
       if (err.kind === "ObjectId") {
@@ -79,6 +84,42 @@ exports.deleteCategory=async(req,res,next)=>{
   }
 
 }
+
+
+// delete-category controller
+exports.getCategory=async(req,res,next)=>{
+    try {
+    const category = await Category.findById(req.params.id);
+    if (!category) {
+      return res.status(404).json({ msg: "Category not found with that id" });
+    }
+    if (category.user.toString() !== req.user.id) {
+      return res.status(401).json({ msg: "USer not authorized" });
+    }
+    // await category.remove();
+    res.json({ category });
+  } catch (err) {
+    if (err.kind === "ObjectId") {
+      return res.status(404).json({ msg: "Category not found with that id" });
+    }
+    return res.status(500).send("Server error");
+  }
+
+}
+
+
+
+exports.adminCategories=async(req,res,next)=>{
+  try{
+    const categories=await Category.find({user:req.user.id});
+    // console.log(categories)
+    res.json({categories});
+  }
+  catch(err){
+    return res.status(500).send("Server error");
+  }
+}
+
 
 
 // get-all categories controller
